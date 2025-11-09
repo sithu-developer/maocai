@@ -15,8 +15,17 @@ datasource db {
 }
 
 
-model category {
+model company {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   email String @unique
+  Category category[]
+}
+
+model category {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  url String
+  companyId String @db.ObjectId
+  Company company @relation(fields: [companyId] , references: [id])
 }
