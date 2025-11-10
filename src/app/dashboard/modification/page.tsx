@@ -1,14 +1,21 @@
 "use client"
+import { useAppDispatch } from "@/store/hooks";
+import { createNewCategory } from "@/store/slice/category";
+import { NewCategory } from "@/type/category";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
 
-const defaultNewCategory : NewCategory= {
+const defaultNewCategory : NewCategory = {
     name : "" , url : ""
 }
 
 const ModificationPage = () => {
     const [ newCategory , setNewCategory ] = useState<NewCategory>(defaultNewCategory);
+    const dispatch = useAppDispatch();
 
+    const handleCreateNewCategory = () => {
+        dispatch(createNewCategory( newCategory ))   
+    }
 
     return (
         <div className="bg-[#EAF4F4] h-screen w-screen flex">
@@ -38,7 +45,7 @@ const ModificationPage = () => {
                 </div>
                 <div className="mt-2 flex gap-3">
                     <button className="border border-black cursor-pointer px-2 py-1 rounded-lg hover:bg-blue-300 select-none" onClick={() => setNewCategory(defaultNewCategory)} >Clear</button>
-                    <button disabled={!newCategory.name || !newCategory.url} className="bg-blue-600 cursor-pointer p-2 rounded-lg hover:bg-blue-500 select-none disabled:bg-gray-500 disabled:text-gray-800 disabled:cursor-not-allowed" onClick={() => console.log(newCategory)} >Create</button>
+                    <button disabled={!newCategory.name || !newCategory.url} className="bg-blue-600 cursor-pointer p-2 rounded-lg hover:bg-blue-500 select-none disabled:bg-gray-500 disabled:text-gray-800 disabled:cursor-not-allowed" onClick={handleCreateNewCategory} >Create</button>
                 </div>
             </div>
         </div>
