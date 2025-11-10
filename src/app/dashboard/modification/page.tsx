@@ -1,20 +1,25 @@
 "use client"
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { createNewCategory } from "@/store/slice/category";
 import { NewCategory } from "@/type/category";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
 
 const defaultNewCategory : NewCategory = {
-    name : "" , url : ""
+    name : "" , url : "" , companyId : ""
 }
 
 const ModificationPage = () => {
     const [ newCategory , setNewCategory ] = useState<NewCategory>(defaultNewCategory);
     const dispatch = useAppDispatch();
+    const company = useAppSelector(store => store.company.item)
 
     const handleCreateNewCategory = () => {
-        dispatch(createNewCategory( newCategory ))   
+        if(company) {
+            dispatch(createNewCategory( { ...newCategory , companyId : company.id , isSuccess : () => {
+                setNewCategory(defaultNewCategory);
+            }} ))
+        }
     }
 
     return (
