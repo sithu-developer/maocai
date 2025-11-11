@@ -1,3 +1,5 @@
+import { category } from "@prisma/client";
+
 export interface SuccessOrFailTypes {
     isSuccess ?: ( value ?: unknown ) => void;
     isFail ?: ( value ?: unknown ) => void;
@@ -8,3 +10,5 @@ export interface NewCategory extends SuccessOrFailTypes  {
     url : string
     companyId : string
 }
+
+export interface UpdatedCategory extends category , SuccessOrFailTypes {}

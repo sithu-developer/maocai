@@ -1,4 +1,4 @@
-import { NewCategory } from "@/type/category";
+import { NewCategory, UpdatedCategory } from "@/type/category";
 import { envValues } from "@/util/envValues";
 import { category } from "@prisma/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -34,7 +34,28 @@ export const createNewCategory = createAsyncThunk("categorySlice/createNewCatego
             isFail();
         }
     }
+})
 
+export const updateCategory = createAsyncThunk("categorySlice/updateCategory" , async( categoryToUpdate : UpdatedCategory , thunkApi ) => {
+    const { id , name , url , companyId , isFail , isSuccess } = categoryToUpdate;
+    try {
+        const response = await fetch(`${envValues.apiUrl}/category` , {
+            method : "PUT",
+            headers : {
+                "content-type" : "application/json"
+            },
+            body : JSON.stringify({ id , name , url , companyId })
+        });
+        const { updatedCategory } = await response.json();
+        thunkApi.dispatch(replaceCategory(updatedCategory))
+        if(isSuccess) {
+            isSuccess();
+        }
+    } catch(err) {
+        if(isFail) {
+            isFail();
+        }
+    }
 })
 
 const categorySlice = createSlice({
@@ -46,11 +67,14 @@ const categorySlice = createSlice({
         },
         addNewCategory : (state , action : PayloadAction<category> ) => {
             state.items = [...state.items , action.payload ]
+        },
+        replaceCategory : ( state , action : PayloadAction<category> ) => {
+            state.items = state.items.map(item => (item.id === action.payload.id) ? action.payload : item);
         }
 
     }
 });
 
-export const { setCategories , addNewCategory } = categorySlice.actions;
+export const { setCategories , addNewCategory , replaceCategory } = categorySlice.actions;
 
 export default categorySlice.reducer;
