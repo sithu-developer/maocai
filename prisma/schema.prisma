@@ -13,18 +13,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model company {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-  email String @unique
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  email    String     @unique
   Category category[]
 }
 
 model category {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-  url String
-  companyId String @db.ObjectId
-  Company company @relation(fields: [companyId] , references: [id])
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  url       String
+  companyId String  @db.ObjectId
+  Company   company @relation(fields: [companyId], references: [id])
+  Food      food[]
+}
+
+model food {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  price      Int
+  url        String
+  categoryId String   @db.ObjectId
+  Category   category @relation(fields: [categoryId], references: [id])
 }

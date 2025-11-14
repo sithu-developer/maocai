@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 import categoryReducer from "./slice/category"
 import companyReducer from "./slice/company"
+import foodReducer from "./slice/food"
 
 export const store = configureStore({
   reducer: {
     category : categoryReducer,
     company : companyReducer,
-
+    food : foodReducer,
+    
   },
 })
 

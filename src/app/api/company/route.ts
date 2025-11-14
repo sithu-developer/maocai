@@ -8,12 +8,14 @@ export const POST = async( req : NextRequest ) => {
     if(!email) return res.json({ error : "Bad Request"} , { status : 400 });
     const isExit = await prisma.company.findUnique({ where : { email }});
     if(isExit) {
-        const categories = await prisma.category.findMany({ where : { companyId : isExit.id }});
-        return res.json({ company : isExit , categories });
+        const categories = await prisma.category.findMany({ where : { companyId : isExit.id } , orderBy : { id : "asc" }});
+        const categoriesIds = categories.map(item => item.id);
+        const foods = await prisma.food.findMany({ where : { categoryId : { in : categoriesIds }} , orderBy : { id : "asc" }});
+        return res.json({ company : isExit , categories , foods });
     } else {
         const newCompany = await prisma.company.create({ data : { name : "Company Name" , email }});
         const newCategory = await prisma.category.create({ data : { name : "Category Name" , url : "example.png" , companyId : newCompany.id }});
-        return res.json({ company : newCompany , categories : [ newCategory ]});
+        const newFood = await prisma.food.create({ data : { name : "Food name" , price : 100 , url : "example.png" , categoryId : newCategory.id }})
+        return res.json({ company : newCompany , categories : [ newCategory ] , foods : [ newFood ] });
     }
-    
 }
