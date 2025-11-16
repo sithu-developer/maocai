@@ -4,7 +4,7 @@ import { createNewCategory, updateCategory } from "@/store/slice/category";
 import { NewCategory } from "@/type/category";
 import { ArrowPathIcon, PaintBrushIcon, PencilIcon, TrashIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import { category } from "@prisma/client";
-import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -44,8 +44,8 @@ const ModificationPage = () => {
                 <div className="flex flex-wrap gap-5 p-5 overflow-auto">
                     {categories.map(item => (
                         <div key={item.id} className="relative h-43 w-40 bg-cyan-500 rounded-[9px] border-2 border-[#B5B837AB] flex flex-col justify-between cursor-pointer" onClick={() => router.push(`./modification/${item.id}`)}>
-                            <div>
-                                
+                            <div className="overflow-hidden h-full w-full flex items-center justify-center rounded-t-[9px]" >
+                                <Image alt="category photo" src={item.url} width={400} height={400} className=" h-full w-auto"  />
                             </div>
                             <div className="bg-[#E76B6A] border-t-2 border-t-[#B5B837AB] rounded-b-[9px] py-1">
                                 <p className="text-center text-lg text-[#EAF4F4]" >{item.name}</p>
@@ -80,14 +80,14 @@ const ModificationPage = () => {
                     <p>Image</p>
                     <div className="flex items-center justify-between gap-3 bg-blue-300 px-3 py-2 w-full rounded-3xl">
                         <p>{editedCategory.url}</p>
-                        <div className="hover:bg-blue-400 cursor-pointer rounded-3xl" onClick={() => setEditedCategory({...editedCategory , url : "updatedUrl.png"})}>
+                        <div className="hover:bg-blue-400 cursor-pointer rounded-3xl p-1" onClick={() => setEditedCategory({...editedCategory , url : "updatedUrl.png"})}>
                             <PaintBrushIcon className="w-4" />
                         </div>
                     </div>
                 </div>
                 :<div className="flex flex-col gap-2">
                     <p>Image</p>
-                    <button className="bg-blue-600 cursor-pointer py-2 rounded-3xl shadow-2xs w-full hover:bg-blue-500 select-none" onClick={() => setNewCategory({...newCategory , url : "example.png"})}>Add Image</button>
+                    <button className="bg-blue-600 cursor-pointer py-2 rounded-3xl shadow-2xs w-full hover:bg-blue-500 select-none" onClick={() => setNewCategory({...newCategory , url : "/maocai-category.jpg"})}>Add Image</button>
                     {newCategory.url && <div className="flex items-center gap-3 bg-blue-300 px-2 py-1 w-fit rounded-3xl">
                         <p>{newCategory.url}</p>
                         <div className="hover:bg-blue-400 cursor-pointer rounded-3xl" onClick={() => setNewCategory({...newCategory , url : ""})}>

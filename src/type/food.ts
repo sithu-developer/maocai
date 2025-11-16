@@ -9,3 +9,7 @@ export interface NewFood extends SuccessOrFailTypes {
 }
 
 export interface UpdatedFood extends food , SuccessOrFailTypes {}
+
+export interface DeleteFood extends SuccessOrFailTypes {
+    id : string
+}

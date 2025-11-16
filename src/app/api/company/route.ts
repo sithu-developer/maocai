@@ -14,8 +14,8 @@ export const POST = async( req : NextRequest ) => {
         return res.json({ company : isExit , categories , foods });
     } else {
         const newCompany = await prisma.company.create({ data : { name : "Company Name" , email }});
-        const newCategory = await prisma.category.create({ data : { name : "Category Name" , url : "example.png" , companyId : newCompany.id }});
-        const newFood = await prisma.food.create({ data : { name : "Food name" , price : 100 , url : "example.png" , categoryId : newCategory.id }})
+        const newCategory = await prisma.category.create({ data : { name : "Category Name" , url : "/maocai-category.jpg" , companyId : newCompany.id }});
+        const newFood = await prisma.food.create({ data : { name : "Food name" , price : 100 , url : "/pork.jpg" , categoryId : newCategory.id }})
         return res.json({ company : newCompany , categories : [ newCategory ] , foods : [ newFood ] });
     }
 }

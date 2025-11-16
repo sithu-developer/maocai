@@ -25,5 +25,18 @@ export const PUT = async( req : NextRequest ) => {
     const isExit = await prisma.food.findUnique({ where : { id }});
     if(!isExit) return res.json({ error : "Bad request" } , { status : 400 });
     const updatedFood = await prisma.food.update({ where : { id } , data : { name , price , url , categoryId }});
-    return res.json({ updatedFood })
+    return res.json({ updatedFood });
+}
+
+export const DELETE = async( req : NextRequest ) => {
+    const res = NextResponse;
+    const session = await getServerSession(authOptions);
+    if(!session) return res.json({ error : "Unauthorized" } , { status : 401 });
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    if(!id) return res.json({ error : "Bad request" } , { status : 400 });
+    const isExit = await prisma.food.findUnique({ where : { id }});
+    if(!isExit) return res.json({ error : "Bad request" } , { status : 400 });
+    const deletedFood = await prisma.food.delete({ where : { id }});
+    return res.json({ deletedFood });
 }

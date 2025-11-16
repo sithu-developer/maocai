@@ -1,4 +1,4 @@
-import { NewFood, UpdatedFood } from "@/type/food";
+import { DeleteFood, NewFood, UpdatedFood } from "@/type/food";
 import { envValues } from "@/util/envValues";
 import { food } from "@prisma/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -57,6 +57,24 @@ export const updateFood = createAsyncThunk("foodSlice/updateFood" , async( foodT
     }
 })
 
+export const deleteFood = createAsyncThunk("foodSlice/deleteFood" , async( foodToDelete : DeleteFood , thunkApi ) => {
+    const { id , isFail , isSuccess } = foodToDelete;
+    try {
+        const response = await fetch(`${envValues.apiUrl}/food?id=${id}`, {
+            method : "DELETE"
+        });
+        const { deletedFood } = await response.json();
+        thunkApi.dispatch(removeFood(deletedFood))
+        if(isSuccess) {
+            isSuccess();
+        }
+    } catch(err) {
+        if(isFail) {
+            isFail();
+        }
+    }
+})
+
 const foodSlice = createSlice({
     name : "foodSlice",
     initialState ,
@@ -69,10 +87,13 @@ const foodSlice = createSlice({
         },
         replaceFood : ( state , action : PayloadAction<food>) => {
             state.items = state.items.map(item => (item.id === action.payload.id) ? action.payload : item )
+        },
+        removeFood : ( state , action : PayloadAction<food> ) => {
+            state.items = state.items.filter(item => item.id !== action.payload.id );
         }
     }
 })
 
-export const { addFood , setFoods , replaceFood } = foodSlice.actions;
+export const { addFood , setFoods , replaceFood , removeFood } = foodSlice.actions;
 
 export default foodSlice.reducer;
