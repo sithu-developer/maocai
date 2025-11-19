@@ -1,7 +1,9 @@
 "use client"
 
+import WarningDialog from "@/components/WariningDialog";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { createNewFood, deleteFood, updateFood } from "@/store/slice/food";
+import { createNewFood, updateFood } from "@/store/slice/food";
+import { changeLoading } from "@/store/slice/loading";
 import { NewFood, UpdatedFood } from "@/type/food";
 import { ArrowPathIcon, PaintBrushIcon, PencilIcon, TrashIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import { category } from "@prisma/client";
@@ -21,6 +23,7 @@ const MenuPage = () => {
     const [ selectedCategory , setSelectedCategory ] = useState<category>();
     const [ editedFood , setEditedFood ] = useState<UpdatedFood>();
     const [ newFood , setNewFood ] = useState<NewFood>(defaultNewFood);
+    const [ openWarning , setOpenWarning ] = useState<boolean>(false);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -33,26 +36,23 @@ const MenuPage = () => {
     if(!selectedCategory) return null;
 
     const handleCreateNewFood = () => {
+        dispatch(changeLoading(true))
         dispatch(createNewFood({...newFood , categoryId : selectedCategory.id , isSuccess : () => {
             setNewFood(defaultNewFood);
+            dispatch(changeLoading(false))
         }}))
     }
 
     const handleUpdateFood = () => {
         if(editedFood) {
+            dispatch(changeLoading(true))
             dispatch(updateFood({...editedFood , isSuccess : () => {
                 setEditedFood(undefined);
+                dispatch(changeLoading(false))
             } }))
         }
     }
 
-    const handleDeleteFood = () => {
-        if(editedFood) {
-            dispatch(deleteFood({ id : editedFood.id , isSuccess : () => {
-                setEditedFood(undefined);
-            } }))
-        }
-    }
 
     return (
         <div className="bg-[#EAF4F4] h-screen w-screen flex">
@@ -65,7 +65,7 @@ const MenuPage = () => {
                                 <Image alt="category photo" src={item.url} width={400} height={400} className=" h-auto w-full"  />
                             </div>
                             <div className="bg-[#E76B6A] border-t-2 border-t-[#B5B837AB] rounded-b-[9px] py-1">
-                                <p className="text-center text-lg text-[#EAF4F4]" >{item.name}</p>
+                                <p className="text-center text-lg text-[#EAF4F4]" >{item.name} - {item.price}ks</p>
                             </div>
                             {(editedFood && editedFood.id === item.id) ? <ArrowPathIcon className="animate-spin absolute -top-3 -right-3 w-7 p-1 bg-[#E76B6A] text-[#EAF4F4] border rounded-2xl cursor-pointer" onClick={() => setEditedFood(undefined)} />
                             :<PencilIcon className=" absolute -top-3 -right-3 w-7 p-1 bg-[#E76B6A] text-[#EAF4F4] border rounded-2xl cursor-pointer" onClick={() => setEditedFood(item)} />}
@@ -76,7 +76,7 @@ const MenuPage = () => {
             <div className="bg-[#14b7cc] w-[28%] p-5 flex flex-col gap-5">
                 <div className={`flex ${editedFood ? "justify-between" : "justify-center"} items-center`} >
                     <p className="text-2xl">{editedFood ? "Edit Food" : "New Food"}</p>
-                    {editedFood && <div className="p-1.5 border border-red-800 rounded-md cursor-pointer hover:bg-gray-400" onClick={handleDeleteFood}>
+                    {editedFood && <div className="p-1.5 border border-red-800 rounded-md cursor-pointer hover:bg-gray-400" onClick={() => setOpenWarning(true)}>
                         <TrashIcon className="w-4.5 text-red-800" />
                     </div>}
                 </div>
@@ -124,6 +124,7 @@ const MenuPage = () => {
                     :<button disabled={!newFood.name || !newFood.price || !newFood.url} className="bg-blue-600 cursor-pointer p-2 rounded-lg hover:bg-blue-500 select-none disabled:bg-gray-500 disabled:text-gray-800 disabled:cursor-not-allowed" onClick={handleCreateNewFood} >Create</button>}
                 </div>
             </div>
+            <WarningDialog openWarning={openWarning} setOpenWarning={setOpenWarning} foodToDelete={editedFood} setEditedFood={setEditedFood} />
         </div>
     )
 }

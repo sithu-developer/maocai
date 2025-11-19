@@ -1,7 +1,8 @@
-import { NewCategory, UpdatedCategory } from "@/type/category";
+import { DeleteCategory, NewCategory, UpdatedCategory } from "@/type/category";
 import { envValues } from "@/util/envValues";
 import { category } from "@prisma/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { removeFoodsFromCategory } from "./food";
 
 
 interface InitialStateType {
@@ -58,6 +59,26 @@ export const updateCategory = createAsyncThunk("categorySlice/updateCategory" , 
     }
 })
 
+export const deleteCategory = createAsyncThunk("categorySlice/deleteCategory" , async( categoryToDelete : DeleteCategory , thunkApi ) => {
+    const { id , isFail , isSuccess } = categoryToDelete;
+    try {
+        const response = await fetch(`${envValues.apiUrl}/category?id=${id}` , {
+            method : "DELETE",
+        });
+        const { deletedCategory } = await response.json();
+        thunkApi.dispatch(removeFoodsFromCategory(deletedCategory))
+        thunkApi.dispatch(removeCategory(deletedCategory))
+        if(isSuccess) {
+            isSuccess();
+        }
+    } catch(err) {
+        if(isFail) {
+            isFail();
+        }
+    }
+
+})
+
 const categorySlice = createSlice({
     name : "categorySlice",
     initialState , 
@@ -70,11 +91,13 @@ const categorySlice = createSlice({
         },
         replaceCategory : ( state , action : PayloadAction<category> ) => {
             state.items = state.items.map(item => (item.id === action.payload.id) ? action.payload : item);
+        },
+        removeCategory : ( state , action : PayloadAction<category> ) => {
+            state.items = state.items.filter(item => item.id !== action.payload.id );
         }
-
     }
 });
 
-export const { setCategories , addNewCategory , replaceCategory } = categorySlice.actions;
+export const { setCategories , addNewCategory , replaceCategory , removeCategory } = categorySlice.actions;
 
 export default categorySlice.reducer;

@@ -1,6 +1,8 @@
 "use client"
+import WarningDialog from "@/components/WariningDialog";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { createNewCategory, updateCategory } from "@/store/slice/category";
+import { changeLoading } from "@/store/slice/loading";
 import { NewCategory } from "@/type/category";
 import { ArrowPathIcon, PaintBrushIcon, PencilIcon, TrashIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import { category } from "@prisma/client";
@@ -15,6 +17,7 @@ const defaultNewCategory : NewCategory = {
 const ModificationPage = () => {
     const [ newCategory , setNewCategory ] = useState<NewCategory>(defaultNewCategory);
     const [ editedCategory , setEditedCategory ] = useState<category>();
+    const [ openWarning , setOpenWarning ] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const company = useAppSelector(store => store.company.item);
     const categories = useAppSelector(store => store.category.items);
@@ -23,16 +26,20 @@ const ModificationPage = () => {
 
     const handleCreateNewCategory = () => {
         if(company) {
+            dispatch(changeLoading(true))
             dispatch(createNewCategory( { ...newCategory , companyId : company.id , isSuccess : () => {
                 setNewCategory(defaultNewCategory);
+                dispatch(changeLoading(false))
             }} ))
         }
     }
 
     const handleUpdateCategory = () => {
         if(editedCategory) {
+            dispatch(changeLoading(true))
             dispatch(updateCategory({...editedCategory , isSuccess : () => {
                 setEditedCategory(undefined);
+                dispatch(changeLoading(false))
             }}))
         }
     }
@@ -65,7 +72,7 @@ const ModificationPage = () => {
             <div className="bg-[#14b7cc] w-[28%] p-5 flex flex-col gap-5">
                 <div className={`flex ${editedCategory ? "justify-between" : "justify-center"} items-center`} >
                     <p className="text-2xl">{editedCategory ? "Edit Category" : "New Category"}</p>
-                    {editedCategory && <div className="p-1.5 border border-red-800 rounded-md cursor-pointer hover:bg-gray-400">
+                    {editedCategory && <div className="p-1.5 border border-red-800 rounded-md cursor-pointer hover:bg-gray-400" onClick={() => setOpenWarning(true)}>
                         <TrashIcon className="w-4.5 text-red-800" />
                     </div>}
                 </div>
@@ -107,6 +114,7 @@ const ModificationPage = () => {
                     :<button disabled={!newCategory.name || !newCategory.url} className="bg-blue-600 cursor-pointer p-2 rounded-lg hover:bg-blue-500 select-none disabled:bg-gray-500 disabled:text-gray-800 disabled:cursor-not-allowed" onClick={handleCreateNewCategory} >Create</button>}
                 </div>
             </div>
+            <WarningDialog openWarning={openWarning} setOpenWarning={setOpenWarning} categoryToDelete={editedCategory} setEditedCategory={setEditedCategory} />
         </div>
     )
 }

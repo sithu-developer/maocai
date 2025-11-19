@@ -1,4 +1,5 @@
 "use client"
+import Loading from "@/components/Loading";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { companyCheck } from "@/store/slice/company";
 import { useSession } from "next-auth/react";
@@ -31,7 +32,7 @@ const BackofficeLayout = ( {children} : Props ) => {
     
     return (
         <div>
-            
+            <Loading />
             {children}
         </div>
     )

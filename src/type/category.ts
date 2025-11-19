@@ -12,3 +12,7 @@ export interface NewCategory extends SuccessOrFailTypes  {
 }
 
 export interface UpdatedCategory extends category , SuccessOrFailTypes {}
+
+export interface DeleteCategory extends SuccessOrFailTypes {
+    id : string;
+}

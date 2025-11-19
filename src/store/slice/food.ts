@@ -1,6 +1,6 @@
 import { DeleteFood, NewFood, UpdatedFood } from "@/type/food";
 import { envValues } from "@/util/envValues";
-import { food } from "@prisma/client";
+import { category, food } from "@prisma/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface InitialStateType {
@@ -90,10 +90,13 @@ const foodSlice = createSlice({
         },
         removeFood : ( state , action : PayloadAction<food> ) => {
             state.items = state.items.filter(item => item.id !== action.payload.id );
+        },
+        removeFoodsFromCategory : ( state , action : PayloadAction<category> ) => {
+            state.items = state.items.filter(item => item.categoryId !== action.payload.id );
         }
     }
 })
 
-export const { addFood , setFoods , replaceFood , removeFood } = foodSlice.actions;
+export const { addFood , setFoods , replaceFood , removeFood , removeFoodsFromCategory } = foodSlice.actions;
 
 export default foodSlice.reducer;

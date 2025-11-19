@@ -29,3 +29,17 @@ export const PUT = async( req : NextRequest ) => {
     const updatedCategory = await prisma.category.update({ where : { id } , data : { name , url , companyId }});
     return res.json({ updatedCategory } , { status : 200 })
 }
+
+export const DELETE = async (req : NextRequest ) => {
+    const res = NextResponse;
+    const session = await getServerSession(authOptions);
+    if(!session) return res.json({ error : "Unauthorized" } , { status : 401 });
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    if(!id) return res.json({ error : "Bad request" } , { status : 400 });
+    const isExit = await prisma.category.findUnique({ where : { id }});
+    if(!isExit) return res.json({ error : "Bad request" } , { status : 400 });
+    await prisma.food.deleteMany({ where : { categoryId : id }});
+    const deletedCategory = await prisma.category.delete({ where : { id }});
+    return res.json({ deletedCategory });
+}
