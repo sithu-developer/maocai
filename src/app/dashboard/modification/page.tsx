@@ -47,7 +47,7 @@ const ModificationPage = () => {
     return (
         <div className="bg-[#EAF4F4] h-screen w-screen flex">
             <div className="w-[72%] flex flex-col">
-                <p className="text-3xl px-5 py-3.5">Category &gt; </p>
+                <p className="text-3xl px-5 py-3.5">Category</p>
                 <div className="flex flex-wrap gap-5 p-5 overflow-auto">
                     {categories.map(item => (
                         <div key={item.id} className="relative h-43 w-40 bg-cyan-500 rounded-[9px] border-2 border-[#B5B837AB] flex flex-col justify-between cursor-pointer" onClick={() => router.push(`./modification/${item.id}`)}>

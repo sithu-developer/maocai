@@ -5,10 +5,10 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { createNewFood, updateFood } from "@/store/slice/food";
 import { changeLoading } from "@/store/slice/loading";
 import { NewFood, UpdatedFood } from "@/type/food";
-import { ArrowPathIcon, PaintBrushIcon, PencilIcon, TrashIcon, XMarkIcon } from "@heroicons/react/16/solid";
+import { ArrowPathIcon, ChevronRightIcon, PaintBrushIcon, PencilIcon, TrashIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import { category } from "@prisma/client";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 
@@ -25,6 +25,7 @@ const MenuPage = () => {
     const [ newFood , setNewFood ] = useState<NewFood>(defaultNewFood);
     const [ openWarning , setOpenWarning ] = useState<boolean>(false);
     const dispatch = useAppDispatch();
+    const router = useRouter();
 
     useEffect(() => {
         if(categories.length && id ) {
@@ -57,7 +58,11 @@ const MenuPage = () => {
     return (
         <div className="bg-[#EAF4F4] h-screen w-screen flex">
             <div className="w-[72%] flex flex-col">
-                <p className="text-3xl px-5 py-3.5">Category &gt; {selectedCategory.name}</p>
+                <div className="flex gap-5 items-center px-5">
+                    <p className="text-3xl py-3.5 cursor-pointer" onClick={() => router.push("./")}>Category</p>
+                    <ChevronRightIcon className="w-8" />
+                    <p className="text-3xl py-3.5">{selectedCategory.name}</p>
+                </div>
                 <div className="flex flex-wrap gap-5 p-5 overflow-auto">
                     {foods.filter(food => food.categoryId === selectedCategory.id).map(item => (
                         <div key={item.id} className="relative h-43 w-40 bg-cyan-500 rounded-[9px] border-2 border-[#B5B837AB] flex flex-col justify-between">
