@@ -1,5 +1,6 @@
 "use client"
 import Loading from "@/components/Loading";
+import SideBar from "@/components/SideBar";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { companyCheck } from "@/store/slice/company";
 import { useSession } from "next-auth/react";
@@ -31,9 +32,10 @@ const BackofficeLayout = ( {children} : Props ) => {
         } , [ session , pathname , company ])
     
     return (
-        <div>
-            <Loading />
+        <div className="flex">
+            <SideBar />
             {children}
+            <Loading />
         </div>
     )
 }
