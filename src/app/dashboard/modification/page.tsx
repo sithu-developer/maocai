@@ -26,8 +26,11 @@ const ModificationPage = () => {
 
     const handleCreateNewCategory = () => {
         if(company) {
-            dispatch(changeLoading(true))
+            const timeOut = setTimeout(() => {
+                dispatch(changeLoading(true))
+            } , 3000 )
             dispatch(createNewCategory( { ...newCategory , companyId : company.id , isSuccess : () => {
+                clearTimeout(timeOut);
                 setNewCategory(defaultNewCategory);
                 dispatch(changeLoading(false))
             }} ))
@@ -36,8 +39,11 @@ const ModificationPage = () => {
 
     const handleUpdateCategory = () => {
         if(editedCategory) {
-            dispatch(changeLoading(true))
+            const timeOut = setTimeout(() => {
+                dispatch(changeLoading(true))
+            } , 3000 )
             dispatch(updateCategory({...editedCategory , isSuccess : () => {
+                clearTimeout(timeOut);
                 setEditedCategory(undefined);
                 dispatch(changeLoading(false))
             }}))

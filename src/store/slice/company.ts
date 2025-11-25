@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { NewCompany } from "@/type/company";
+import { NewCompany, UpdatedCompany } from "@/type/company";
 import { envValues } from "@/util/envValues";
 import { company } from "@prisma/client";
 import { setCategories } from "./category";
@@ -39,13 +39,36 @@ export const companyCheck = createAsyncThunk("companySlice/companyCheck" , async
     }
 })
 
+export const updateCompany = createAsyncThunk("companySlice/updateCompany" , async( companyToUpdate : UpdatedCompany , thunkApi ) => {
+    const { id , name , email , isSuccess , isFail } = companyToUpdate;
+    try {
+        const response = await fetch(`${envValues.apiUrl}/company` , {
+            method : "PUT",
+            headers : {
+                "content-type" : "application/json"
+            },
+            body : JSON.stringify({ id , name , email })
+        });
+        const { updatedCompany } = await response.json();
+        thunkApi.dispatch(setCompany(updatedCompany))
+        if(isSuccess) {
+            isSuccess();
+        }
+    } catch(err) {
+        if(isFail) {
+            isFail();
+        }
+    }
+
+})
+
 const companySlice = createSlice({
     name : "companySlice",
     initialState ,
     reducers : {
         setCompany : ( state , action : PayloadAction<company> ) => {
             state.item = action.payload;
-        }
+        },
     }
 })
 
