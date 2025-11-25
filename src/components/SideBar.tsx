@@ -36,6 +36,6 @@ const sideBarItems : SideBarItemType[] = [
         id : 2,
         name : "Settings",
         icon : Cog6ToothIcon,
-        url : "/dashboard/settings"
+        url : "/dashboard/setting"
     }
 ]
