@@ -55,7 +55,7 @@ const ModificationPage = () => {
             <div className="w-[72%] flex flex-col">
                 <p className="text-3xl px-5 py-3.5">Category</p>
                 <div className="flex flex-wrap gap-5 p-5 overflow-auto">
-                    {categories.map(item => (
+                    {categories.length ? categories.map(item => (
                         <div key={item.id} className="relative h-43 w-40 bg-cyan-500 rounded-[9px] border-2 border-[#B5B837AB] flex flex-col justify-between cursor-pointer" onClick={() => router.push(`./modification/${item.id}`)}>
                             <div className="overflow-hidden h-full w-full flex items-center justify-center rounded-t-[9px]" >
                                 <Image alt="category photo" src={item.url} width={400} height={400} className=" h-full w-auto"  />
@@ -72,7 +72,8 @@ const ModificationPage = () => {
                                 setEditedCategory(item)
                             }} />}
                         </div>
-                    ))}
+                    ))
+                    :<p>No created category !</p>}
                 </div>
             </div>
             <div className="bg-[#14b7cc] grow p-5 flex flex-col gap-5">

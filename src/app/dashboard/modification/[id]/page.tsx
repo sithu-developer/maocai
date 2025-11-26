@@ -70,7 +70,7 @@ const MenuPage = () => {
                     <p className="text-3xl py-3.5">{selectedCategory.name}</p>
                 </div>
                 <div className="flex flex-wrap gap-5 p-5 overflow-auto">
-                    {foods.filter(food => food.categoryId === selectedCategory.id).map(item => (
+                    {foods.filter(food => food.categoryId === selectedCategory.id).length ? foods.filter(food => food.categoryId === selectedCategory.id).map(item => (
                         <div key={item.id} className="relative h-43 w-40 bg-cyan-500 rounded-[9px] border-2 border-[#B5B837AB] flex flex-col justify-between">
                             <div className="overflow-hidden h-full w-full flex items-center justify-center rounded-t-[9px]" >
                                 <Image alt="category photo" src={item.url} width={400} height={400} className=" h-auto w-full"  />
@@ -81,7 +81,8 @@ const MenuPage = () => {
                             {(editedFood && editedFood.id === item.id) ? <ArrowPathIcon className="animate-spin absolute -top-3 -right-3 w-7 p-1 bg-[#E76B6A] text-[#EAF4F4] border rounded-2xl cursor-pointer" onClick={() => setEditedFood(undefined)} />
                             :<PencilIcon className=" absolute -top-3 -right-3 w-7 p-1 bg-[#E76B6A] text-[#EAF4F4] border rounded-2xl cursor-pointer" onClick={() => setEditedFood(item)} />}
                         </div>
-                    ))}
+                    ))
+                    :<p>No created food !</p>}
                 </div>
             </div>
             <div className="bg-[#14b7cc] grow p-5 flex flex-col gap-5">

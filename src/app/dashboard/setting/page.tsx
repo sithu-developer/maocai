@@ -30,7 +30,7 @@ const SettingPage = () => {
     }
 
     return (
-        <div className=" w-screen bg-[#EAF4F4] flex flex-col items-center gap-15 p-5">
+        <div className=" w-screen bg-[#EAF4F4] flex flex-col items-center gap-13 p-5">
             <p className="text-3xl">Settings</p>
             <div>
                 <p className="text-xs text-blue-500 " >Company Name</p>
