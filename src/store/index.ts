@@ -3,6 +3,7 @@ import categoryReducer from "./slice/category"
 import companyReducer from "./slice/company"
 import foodReducer from "./slice/food"
 import loadingReducer from "./slice/loading"
+import tableReducer from "./slice/table"
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     company : companyReducer,
     food : foodReducer,
     loading : loadingReducer,
+    table : tableReducer,
     
   },
 })

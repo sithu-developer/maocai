@@ -1,4 +1,4 @@
-import { Abyssinica_SIL , Nanum_Myeongjo, Gowun_Batang } from "next/font/google";
+import { Abyssinica_SIL, Nanum_Myeongjo } from "next/font/google";
 
 export const abyssinica = Abyssinica_SIL({
   subsets: ["latin"],

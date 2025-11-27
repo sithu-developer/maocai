@@ -1,4 +1,4 @@
-import { BuildingStorefrontIcon, Cog6ToothIcon, InboxIcon } from "@heroicons/react/16/solid";
+import { BuildingStorefrontIcon, Cog6ToothIcon, InboxIcon, Squares2X2Icon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 
 const SideBar = () => {
@@ -40,6 +40,12 @@ const sideBarItems : SideBarItemType[] = [
     },
     {
         id : 2,
+        name : "Tables",
+        icon : Squares2X2Icon ,
+        url : "/dashboard/table"
+    },
+    {
+        id : 3,
         name : "Settings",
         icon : Cog6ToothIcon,
         url : "/dashboard/setting"

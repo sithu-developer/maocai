@@ -18,6 +18,7 @@ model company {
   name     String
   email    String     @unique
   Category category[]
+  Table    tables[]
 }
 
 model category {
@@ -36,4 +37,12 @@ model food {
   url        String
   categoryId String   @db.ObjectId
   Category   category @relation(fields: [categoryId], references: [id])
+}
+
+model tables {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  tableName String  @unique
+  url       String
+  companyId String  @db.ObjectId
+  Company   company @relation(fields: [companyId], references: [id])
 }
