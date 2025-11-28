@@ -51,23 +51,23 @@ const ModificationPage = () => {
     }
 
     return (
-        <div className="bg-[#EAF4F4] h-screen w-screen flex">
+        <div className="bg-secondary h-screen w-screen flex">
             <div className="w-[72%] flex flex-col">
                 <p className="text-3xl px-5 py-3.5">Category</p>
                 <div className="flex flex-wrap gap-5 p-5 overflow-auto">
                     {categories.length ? categories.map(item => (
-                        <div key={item.id} className="relative h-43 w-40 bg-cyan-500 rounded-[9px] border-2 border-[#B5B837AB] flex flex-col justify-between cursor-pointer" onClick={() => router.push(`./modification/${item.id}`)}>
+                        <div key={item.id} className="relative h-43 w-40 bg-cyan-500 rounded-[9px] border-2 border-borderColor flex flex-col justify-between cursor-pointer" onClick={() => router.push(`./modification/${item.id}`)}>
                             <div className="overflow-hidden h-full w-full flex items-center justify-center rounded-t-[9px]" >
                                 <Image alt="category photo" src={item.url} width={400} height={400} className=" h-full w-auto"  />
                             </div>
-                            <div className="bg-[#E76B6A] border-t-2 border-t-[#B5B837AB] rounded-b-[9px] py-1">
-                                <p className="text-center text-lg text-[#EAF4F4]" >{item.name}</p>
+                            <div className="bg-primary border-t-2 border-t-borderColor rounded-b-[9px] py-1">
+                                <p className="text-center text-lg text-secondary" >{item.name}</p>
                             </div>
-                            {(editedCategory && editedCategory.id === item.id) ? <ArrowPathIcon className="animate-spin absolute -top-3 -right-3 w-7 p-1 bg-[#E76B6A] text-[#EAF4F4] border rounded-2xl cursor-pointer" onClick={(e) => {
+                            {(editedCategory && editedCategory.id === item.id) ? <ArrowPathIcon className="animate-spin absolute -top-3 -right-3 w-7 p-1 bg-primary text-secondary border rounded-2xl cursor-pointer" onClick={(e) => {
                                 e.stopPropagation();
                                 setEditedCategory(undefined)
                             }} />
-                            :<PencilIcon className=" absolute -top-3 -right-3 w-7 p-1 bg-[#E76B6A] text-[#EAF4F4] border rounded-2xl cursor-pointer" onClick={(e) => {
+                            :<PencilIcon className=" absolute -top-3 -right-3 w-7 p-1 bg-primary text-secondary border rounded-2xl cursor-pointer" onClick={(e) => {
                                 e.stopPropagation();
                                 setEditedCategory(item)
                             }} />}

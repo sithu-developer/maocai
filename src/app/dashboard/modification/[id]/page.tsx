@@ -62,7 +62,7 @@ const MenuPage = () => {
 
 
     return (
-        <div className="bg-[#EAF4F4] h-screen w-screen flex">
+        <div className="bg-secondary h-screen w-screen flex">
             <div className="w-[72%] flex flex-col">
                 <div className="flex gap-5 items-center px-5">
                     <p className="text-3xl py-3.5 cursor-pointer" onClick={() => router.push("./")}>Category</p>
@@ -71,15 +71,15 @@ const MenuPage = () => {
                 </div>
                 <div className="flex flex-wrap gap-5 p-5 overflow-auto">
                     {foods.filter(food => food.categoryId === selectedCategory.id).length ? foods.filter(food => food.categoryId === selectedCategory.id).map(item => (
-                        <div key={item.id} className="relative h-43 w-40 bg-cyan-500 rounded-[9px] border-2 border-[#B5B837AB] flex flex-col justify-between">
+                        <div key={item.id} className="relative h-43 w-40 bg-cyan-500 rounded-[9px] border-2 border-borderColor flex flex-col justify-between">
                             <div className="overflow-hidden h-full w-full flex items-center justify-center rounded-t-[9px]" >
                                 <Image alt="category photo" src={item.url} width={400} height={400} className=" h-auto w-full"  />
                             </div>
-                            <div className="bg-[#E76B6A] border-t-2 border-t-[#B5B837AB] rounded-b-[9px] py-1">
-                                <p className="text-center text-lg text-[#EAF4F4]" >{item.name} - {item.price}ks</p>
+                            <div className="bg-primary border-t-2 border-t-borderColor rounded-b-[9px] py-1">
+                                <p className="text-center text-lg text-secondary" >{item.name} - {item.price}ks</p>
                             </div>
-                            {(editedFood && editedFood.id === item.id) ? <ArrowPathIcon className="animate-spin absolute -top-3 -right-3 w-7 p-1 bg-[#E76B6A] text-[#EAF4F4] border rounded-2xl cursor-pointer" onClick={() => setEditedFood(undefined)} />
-                            :<PencilIcon className=" absolute -top-3 -right-3 w-7 p-1 bg-[#E76B6A] text-[#EAF4F4] border rounded-2xl cursor-pointer" onClick={() => setEditedFood(item)} />}
+                            {(editedFood && editedFood.id === item.id) ? <ArrowPathIcon className="animate-spin absolute -top-3 -right-3 w-7 p-1 bg-primary text-secondary border rounded-2xl cursor-pointer" onClick={() => setEditedFood(undefined)} />
+                            :<PencilIcon className=" absolute -top-3 -right-3 w-7 p-1 bg-primary text-secondary border rounded-2xl cursor-pointer" onClick={() => setEditedFood(item)} />}
                         </div>
                     ))
                     :<p>No created food !</p>}

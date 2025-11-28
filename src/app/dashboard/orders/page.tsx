@@ -1,6 +1,6 @@
 const OrdersPage = () => {
     return (
-        <div className=" w-screen bg-[#EAF4F4] p-5">
+        <div className=" w-screen bg-secondary p-5">
             Orders
         </div>
     )
