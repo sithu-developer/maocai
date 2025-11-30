@@ -15,12 +15,13 @@ export const POST = async( req : NextRequest ) => {
         const categories = await prisma.category.findMany({ where : { companyId : isExit.id } , orderBy : { id : "asc" }});
         const categoriesIds = categories.map(item => item.id);
         const foods = await prisma.food.findMany({ where : { categoryId : { in : categoriesIds }} , orderBy : { id : "asc" }});
-        return res.json({ company : isExit , categories , foods });
+        const tables = await prisma.tables.findMany({ where : { companyId : isExit.id }})
+        return res.json({ company : isExit , categories , foods , tables });
     } else {
         const newCompany = await prisma.company.create({ data : { name : "Company Name" , email }});
         const newCategory = await prisma.category.create({ data : { name : "Category Name" , url : "/maocai-category.jpg" , companyId : newCompany.id }});
         const newFood = await prisma.food.create({ data : { name : "Food name" , price : 100 , url : "/pork.jpg" , categoryId : newCategory.id }})
-        return res.json({ company : newCompany , categories : [ newCategory ] , foods : [ newFood ] });
+        return res.json({ company : newCompany , categories : [ newCategory ] , foods : [ newFood ] , tables : [] });
     }
 }
 

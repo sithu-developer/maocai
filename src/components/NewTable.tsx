@@ -1,4 +1,6 @@
 "use client"
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { createTable } from "@/store/slice/table";
 import { useState } from "react";
 
 interface Props {
@@ -8,8 +10,25 @@ interface Props {
 
 const NewTable = ( { newTableOpen , setNewTableOpen } : Props ) => {
     const [ newTableName , setNewTableName ] = useState<string>("");
+    const [ isLoading , setIsLoading ] = useState<boolean>(false);
+    const company = useAppSelector(store => store.company.item);
+    const dispatch = useAppDispatch();
 
-    if(newTableOpen)
+
+    if(!newTableOpen) return null;
+
+    const handleCreateNewTable = () => {
+        if(company) {
+            // add image to blob
+            setIsLoading(true)
+            dispatch(createTable({ companyId : company.id , imageUrl : "/testQRUrl.png" , tableName : newTableName , isSuccess : () => {
+                setNewTableName("")
+                setIsLoading(false);
+                setNewTableOpen(false);
+            }}))
+        }
+    }
+        
     return (
         <div className="absolute top-0 left-0 w-screen h-screen flex justify-center items-center bg-black/50" onClick={() => {
             setNewTableOpen(false);
@@ -23,7 +42,8 @@ const NewTable = ( { newTableOpen , setNewTableOpen } : Props ) => {
                         setNewTableOpen(false);
                         setNewTableName("")
                     }} >Cancel</button>
-                    <button disabled={!newTableName} className="rounded py-1 px-2 cursor-pointer bg-blue-500 hover:bg-blue-400 select-none disabled:bg-gray-500 disabled:text-gray-800 disabled:cursor-not-allowed " onClick={() => console.log(newTableName)} >Create</button>
+                    {isLoading ? <div className="w-8 h-8 rounded-full border-4 border-primary border-r-transparent animate-spin"></div>
+                    :<button disabled={!newTableName} className="rounded py-1 px-2 cursor-pointer bg-blue-500 hover:bg-blue-400 select-none disabled:bg-gray-500 disabled:text-gray-800 disabled:cursor-not-allowed " onClick={handleCreateNewTable} >Create</button>}
                 </div>
             </div>
         </div>

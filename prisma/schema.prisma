@@ -41,8 +41,8 @@ model food {
 
 model tables {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  tableName String  @unique
-  url       String
+  tableName String
+  imageUrl  String
   companyId String  @db.ObjectId
   Company   company @relation(fields: [companyId], references: [id])
 }

@@ -1,16 +1,27 @@
 "use client"
 import NewTable from "@/components/NewTable";
+import { useAppSelector } from "@/store/hooks";
 import { SquaresPlusIcon } from "@heroicons/react/16/solid";
+import Image from "next/image";
 import { useState } from "react";
 
 const TablePage = () => {
     const [ newTableOpen , setNewTableOpen ] = useState<boolean>(false);
+    const tables = useAppSelector(store => store.table.items);
     
     return (
         <div className=" w-screen bg-secondary p-5">
             <div className="flex justify-between items-center" >
                 <p className="text-3xl ">Tables</p>
                 <SquaresPlusIcon className="w-10 p-1 border rounded-xl cursor-pointer text-primary hover:bg-primary/20" onClick={() => setNewTableOpen(true)} />
+            </div>
+            <div className="flex flex-wrap gap-5 mt-5">
+                {tables.map(item => (  // here
+                    <div key={item.id} className="flex flex-col gap-3 items-center" >
+                        <Image alt="QR code" src={"/testQRUrl.png"} width={400} height={400} className="w-40 h-auto " />
+                        <p>{item.imageUrl}</p>
+                    </div>
+                ))}
             </div>
             <NewTable newTableOpen={newTableOpen} setNewTableOpen={setNewTableOpen} />
         </div>

@@ -4,6 +4,7 @@ import { envValues } from "@/util/envValues";
 import { company } from "@prisma/client";
 import { setCategories } from "./category";
 import { setFoods } from "./food";
+import { setTables } from "./table";
 
 interface InitialStateType {
     item : company | null
@@ -25,10 +26,11 @@ export const companyCheck = createAsyncThunk("companySlice/companyCheck" , async
             },
             body : JSON.stringify({ email })
         });
-        const {company , categories , foods } = await response.json();
+        const {company , categories , foods , tables } = await response.json();
         thunkApi.dispatch(setCompany(company));
         thunkApi.dispatch(setCategories(categories));
         thunkApi.dispatch(setFoods(foods))
+        thunkApi.dispatch(setTables(tables))
         if(isSuccess) {
             isSuccess();
         }
