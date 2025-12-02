@@ -1,5 +1,7 @@
 "use client"
 import NewTable from "@/components/NewTable";
+import UpdateTable from "@/components/UpdateTable";
+import WarningDialog from "@/components/WariningDialog";
 import { useAppSelector } from "@/store/hooks";
 import { ArrowPathIcon, ChevronDoubleUpIcon, PencilIcon, SquaresPlusIcon, TrashIcon } from "@heroicons/react/16/solid";
 import { PrinterIcon } from "@heroicons/react/24/outline";
@@ -9,6 +11,8 @@ import { useState } from "react";
 
 const TablePage = () => {
     const [ newTableOpen , setNewTableOpen ] = useState<boolean>(false);
+    const [ updateTableOpen , setUpdateTableOpen ] = useState<boolean>(false);
+    const [ openWarning , setOpenWarning ] = useState<boolean>(false);
     const tables = useAppSelector(store => store.table.items);
     const [ editedTable , setEditedTable ] = useState<tables>();
 
@@ -42,11 +46,11 @@ const TablePage = () => {
             <div className="flex justify-between items-center" >
                 <p className="text-3xl ">Tables</p>
                 <div className="flex items-center gap-5">
-                    {editedTable && ( // here
-                        <TrashIcon className="w-10 p-1 border rounded-xl cursor-pointer text-red-500 hover:bg-red-200" onClick={() => setNewTableOpen(true)} />
+                    {editedTable && (
+                        <TrashIcon className="w-10 p-1 border rounded-xl cursor-pointer text-red-500 hover:bg-red-200" onClick={() => setOpenWarning(true)} />
                     )}
                     {editedTable && (
-                        <ChevronDoubleUpIcon className="w-10 p-1 border rounded-xl cursor-pointer text-blue-500 hover:bg-blue-200" onClick={() => setNewTableOpen(true)} />
+                        <ChevronDoubleUpIcon className="w-10 p-1 border rounded-xl cursor-pointer text-blue-500 hover:bg-blue-200" onClick={() => setUpdateTableOpen(true)} />
                     )}
                     <SquaresPlusIcon className="w-10 p-1 border rounded-xl cursor-pointer text-primary hover:bg-primary/20" onClick={() => setNewTableOpen(true)} />
                 </div>
@@ -74,6 +78,8 @@ const TablePage = () => {
                 ))}
             </div>
             <NewTable newTableOpen={newTableOpen} setNewTableOpen={setNewTableOpen} />
+            {editedTable && <UpdateTable setUpdateTableOpen={setUpdateTableOpen} updateTableOpen={updateTableOpen} editedTable={editedTable} setEditedTable={setEditedTable} />}
+            {editedTable && <WarningDialog openWarning={openWarning} setOpenWarning={setOpenWarning} editedTable={editedTable} setEditedTable={setEditedTable} />}
         </div>
     )
 }

@@ -3,7 +3,8 @@ import { useAppDispatch } from "@/store/hooks";
 import { deleteCategory } from "@/store/slice/category";
 import { deleteFood } from "@/store/slice/food";
 import { changeLoading } from "@/store/slice/loading";
-import { category, food } from "@prisma/client";
+import { deleteTable } from "@/store/slice/table";
+import { category, food, tables } from "@prisma/client";
 
 interface Props {
     openWarning : boolean;
@@ -12,11 +13,13 @@ interface Props {
     setEditedCategory ?: (value : category | undefined) => void;
     foodToDelete ?: food;
     setEditedFood ?: (value : food | undefined) => void;
+    editedTable ?: tables;
+    setEditedTable ?: (value : tables | undefined) => void;
 }
 
-const WarningDialog = ( { openWarning , setOpenWarning , categoryToDelete , setEditedCategory , foodToDelete , setEditedFood } : Props ) => {
+const WarningDialog = ( { openWarning , setOpenWarning , categoryToDelete , setEditedCategory , foodToDelete , setEditedFood , editedTable , setEditedTable } : Props ) => {
     const dispatch = useAppDispatch();
-    
+
 
     const handleDelete = () => {
         if(categoryToDelete) {
@@ -45,7 +48,19 @@ const WarningDialog = ( { openWarning , setOpenWarning , categoryToDelete , setE
                 dispatch(changeLoading(false))
             } }))
         }
-
+        if(editedTable) {
+            const timeOut = setTimeout(() => {
+                dispatch(changeLoading(true))
+            } , 3000 )
+            dispatch(deleteTable({ id : editedTable.id , isSuccess : () => {
+                setOpenWarning(false);
+                if(setEditedTable) {
+                    setEditedTable(undefined);
+                }
+                clearTimeout(timeOut);
+                dispatch(changeLoading(false))
+            } }))
+        }
     }
 
     return (
@@ -56,7 +71,7 @@ const WarningDialog = ( { openWarning , setOpenWarning , categoryToDelete , setE
                     <h2 className="text-xl text-red-600 mb-4 font-bold">Delete </h2>
 
                     {categoryToDelete && <p className="mb-1 text-blue-500">"Delete this Category will also delete all the foods under that category!"</p>}
-                    <p className="mb-4">Are you sure that you want to Delete this {categoryToDelete && "category \"" + categoryToDelete.name + "\"?"}{foodToDelete && "food \"" + foodToDelete.name + "\"?"}</p>
+                    <p className="mb-4">Are you sure that you want to Delete this {categoryToDelete && "category \"" + categoryToDelete.name + "\"?"}{foodToDelete && "food \"" + foodToDelete.name + "\"?"}{editedTable && "Table \"" + editedTable.tableName + "\"?"}</p>
 
                     <div className="flex justify-end gap-2">
                     <button className="border border-black cursor-pointer px-2 py-1 rounded-lg hover:bg-black/20 select-none"

@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
-import { NewTable } from "@/type/table";
+import { NewTable, UpdateTable } from "@/type/table";
 import { prisma } from "@/util/prisma";
 
 export const POST = async(req : NextRequest) => {
@@ -13,4 +13,30 @@ export const POST = async(req : NextRequest) => {
     if(!isValid) return res.json({ error : "Bad request" } , { status : 400 });
     const newTable = await prisma.tables.create({ data : { tableName , imageUrl , companyId }});
     return res.json({ newTable })
+}
+
+export const PUT = async( req : NextRequest ) => {
+    const res = NextResponse;
+    const session = await getServerSession(authOptions);
+    if(!session) return res.json({ error : "Unauthorized" } , { status : 401 });
+    const { id , tableName } = await req.json() as UpdateTable;
+    const isValid = id && tableName;
+    if(!isValid) return res.json({ error : "Bad request" } , { status : 400 });
+    const isExit = await prisma.tables.findUnique({ where : { id }});
+    if(!isExit) return res.json({ error : "Bad request" } , { status : 400 });
+    const updatedTable = await prisma.tables.update({ where : { id } , data : { tableName }});
+    return res.json({ updatedTable });
+}
+
+export const DELETE = async( req : NextRequest ) => {
+    const res = NextResponse;
+    const session = await getServerSession(authOptions);
+    if(!session) return res.json({ error : "Unauthorized" } , { status : 401 });
+    const url = new URL(req.url);
+    const id = url.searchParams.get("id");
+    if(!id) return res.json({ error : "Bad request" } , { status : 400 });
+    const isExit = await prisma.tables.findUnique({ where : { id }});
+    if(!isExit) return res.json({ error : "Bad request" } , { status : 400 });
+    const deletedTable = await prisma.tables.delete({ where : { id } });
+    return res.json({ deletedTable });
 }
