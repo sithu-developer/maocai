@@ -14,3 +14,8 @@ export interface UpdateTable extends SuccessOrFailTypes {
 export interface DeleteTable extends SuccessOrFailTypes {
     id : string;
 }
+
+export interface CustomerCheckItems extends SuccessOrFailTypes {
+    tableId : string;
+    companyId : string;
+}

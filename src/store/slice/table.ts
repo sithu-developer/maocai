@@ -1,7 +1,10 @@
-import { DeleteTable, NewTable, UpdateTable } from "@/type/table";
+import { CustomerCheckItems, DeleteTable, NewTable, UpdateTable } from "@/type/table";
 import { envValues } from "@/util/envValues";
 import { tables } from "@prisma/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { setCompany } from "./company";
+import { setCategories } from "./category";
+import { setFoods } from "./food";
 
 interface TableSliceInitialState {
     items : tables[]
@@ -13,9 +16,22 @@ const initialState : TableSliceInitialState = {
     error : null
 }
 
-export const customerCheck = createAsyncThunk("tableSlice/customerCheck" , async( checkItems , thunkApi ) => {
-    // here tableId and companyId fetch
-
+export const customerCheck = createAsyncThunk("tableSlice/customerCheck" , async( checkItems : CustomerCheckItems , thunkApi ) => {
+    const { companyId , tableId , isFail , isSuccess } = checkItems;
+    try {
+        const response = await fetch(`${envValues.apiUrl}/table?companyId=${companyId}&tableId=${tableId}`);
+        const { company , categories , foods } = await response.json();
+        thunkApi.dispatch(setCompany(company));
+        thunkApi.dispatch(setCategories(categories));
+        thunkApi.dispatch(setFoods(foods));
+        if(isSuccess) {
+            isSuccess();
+        }
+    } catch(err) {
+        if(isFail) {
+            isFail();
+        }
+    }
 })
 
 export const createTable = createAsyncThunk("tableSlice/createTable" , async( tableToCreate : NewTable , thunkApi ) => {

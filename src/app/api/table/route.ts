@@ -40,3 +40,21 @@ export const DELETE = async( req : NextRequest ) => {
     const deletedTable = await prisma.tables.delete({ where : { id } });
     return res.json({ deletedTable });
 }
+
+export const GET = async( req : NextRequest ) => {
+    const res = NextResponse;
+    // session here **
+    const url = new URL(req.url);
+    const companyId = url.searchParams.get("companyId");
+    const tableId = url.searchParams.get("tableId");
+    const isValid = companyId && tableId;
+    if(!isValid) return res.json({ error : "Bad request" } , { status : 400 });
+    const isCompanyExit = await prisma.company.findUnique({ where : { id : companyId }});
+    if(!isCompanyExit) return res.json({ error : "Bad request" } , { status : 400 });
+    const isTableExit = await prisma.tables.findUnique({ where : { id : tableId }});
+    if(!isTableExit) return res.json({ error : "Bad request" } , { status : 400 });
+    const categories = await prisma.category.findMany({ where : { companyId } , orderBy : { id : "asc" }});
+    const categoryIds = categories.map(item => item.id);
+    const foods = await prisma.food.findMany({ where : { categoryId : { in : categoryIds } } , orderBy : { id : "asc" } });
+    return res.json({ company : isCompanyExit , categories , foods })
+}

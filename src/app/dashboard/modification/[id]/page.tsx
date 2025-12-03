@@ -73,7 +73,7 @@ const MenuPage = () => {
                     {foods.filter(food => food.categoryId === selectedCategory.id).length ? foods.filter(food => food.categoryId === selectedCategory.id).map(item => (
                         <div key={item.id} className="relative h-43 w-40 bg-cyan-500 rounded-[9px] border-2 border-borderColor flex flex-col justify-between">
                             <div className="overflow-hidden h-full w-full flex items-center justify-center rounded-t-[9px]" >
-                                <Image alt="category photo" src={item.url} width={400} height={400} className=" h-auto w-full"  />
+                                <Image alt="category photo" src={item.url} width={400} height={400} className=" h-auto w-full object-cover"  />
                             </div>
                             <div className="bg-primary border-t-2 border-t-borderColor rounded-b-[9px] py-1">
                                 <p className="text-center text-lg text-secondary" >{item.name} - {item.price}ks</p>
