@@ -43,18 +43,16 @@ export const DELETE = async( req : NextRequest ) => {
 
 export const GET = async( req : NextRequest ) => {
     const res = NextResponse;
-    // session here **
+    // no session here **
     const url = new URL(req.url);
-    const companyId = url.searchParams.get("companyId");
     const tableId = url.searchParams.get("tableId");
-    const isValid = companyId && tableId;
-    if(!isValid) return res.json({ error : "Bad request" } , { status : 400 });
-    const isCompanyExit = await prisma.company.findUnique({ where : { id : companyId }});
-    if(!isCompanyExit) return res.json({ error : "Bad request" } , { status : 400 });
+    if(!tableId) return res.json({ error : "Bad request" } , { status : 400 });
     const isTableExit = await prisma.tables.findUnique({ where : { id : tableId }});
     if(!isTableExit) return res.json({ error : "Bad request" } , { status : 400 });
-    const categories = await prisma.category.findMany({ where : { companyId } , orderBy : { id : "asc" }});
+    const company = await prisma.company.findUnique({ where : { id : isTableExit.companyId }});
+    if(!company) return res.json({ error : "Bad request" } , { status : 400 });
+    const categories = await prisma.category.findMany({ where : { companyId : company.id } , orderBy : { id : "asc" }});
     const categoryIds = categories.map(item => item.id);
     const foods = await prisma.food.findMany({ where : { categoryId : { in : categoryIds } } , orderBy : { id : "asc" } });
-    return res.json({ company : isCompanyExit , categories , foods })
+    return res.json({ company , categories , foods })
 }

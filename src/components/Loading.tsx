@@ -7,7 +7,7 @@ const Loading = () => {
 
     if(isLoading)
     return (
-        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
             <Image alt="loading image" src={"/loading-icon.gif"} width={400} height={400} className="w-25 h-auto rounded-4xl " />
         </div>
     )

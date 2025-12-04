@@ -3,13 +3,15 @@ import { useAppSelector } from "@/store/hooks";
 import { abyssinica, nanum } from "@/util/font";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 
 const MainPage = () => {
     const categories = useAppSelector(store => store.category.items);
-    const router = useRouter();
+    const tableId = useSearchParams().get("tableId");
     
+    if(!tableId) return null;
+
     return (
         <div className="w-screen h-screen pl-[6vw] pr-[2vw] bg-secondary">
             <div className="h-[40vh] flex justify-between items-end ">
@@ -21,8 +23,8 @@ const MainPage = () => {
             </div>
             <div className="h-[60vh]">
                 <div className="h-[75%] flex items-center justify-between">
-                    {categories.length ? categories.map(item => ( // here 
-                        <Link key={item.id} href={`/main/${item.id}`} style={{ textDecoration : "none" }} >  
+                    {categories.length ? categories.map(item => ( 
+                        <Link key={item.id} href={`/main/${item.id}?tableId=${tableId}`} style={{ textDecoration : "none" }} >  
                             <div className="relative h-[21vw] w-[19vw] max-w-68 max-h-75 bg-cyan-500 rounded-[9px] border-2 border-borderColor flex flex-col justify-between" >
                                 <div className="overflow-hidden grow w-full flex items-center justify-center rounded-t-[9px]" >
                                     <Image alt="category photo" src={item.url} width={800} height={800} className="h-full w-auto object-cover"  />

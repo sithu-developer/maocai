@@ -20,11 +20,8 @@ const SettingPage = () => {
     if(!company) return null;
 
     const handleUpdateCompany = () => {
-        const timeOut = setTimeout(() => {
-            dispatch(changeLoading(true))
-        } , 3000 )
+        dispatch(changeLoading(true))
         dispatch(updateCompany({ ...company , name : updatedCompanyName , isSuccess : () => {
-            clearTimeout(timeOut);
             dispatch(changeLoading(false));
         }}))
     }

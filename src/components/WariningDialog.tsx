@@ -23,41 +23,32 @@ const WarningDialog = ( { openWarning , setOpenWarning , categoryToDelete , setE
 
     const handleDelete = () => {
         if(categoryToDelete) {
-            const timeOut = setTimeout(() => {
-                dispatch(changeLoading(true))
-            } , 3000 )
+            dispatch(changeLoading(true))
             dispatch(deleteCategory({ id : categoryToDelete.id , isSuccess : () => {
                 setOpenWarning(false);
                 if(setEditedCategory) {
                     setEditedCategory(undefined)
                 }
-                clearTimeout(timeOut);
                 dispatch(changeLoading(false))
             } }))
         }
         if(foodToDelete) {
-            const timeOut = setTimeout(() => {
-                dispatch(changeLoading(true))
-            } , 3000 )
+            dispatch(changeLoading(true))
             dispatch(deleteFood({ id : foodToDelete.id , isSuccess : () => {
                 setOpenWarning(false);
                 if(setEditedFood) {
                     setEditedFood(undefined);
                 }
-                clearTimeout(timeOut);
                 dispatch(changeLoading(false))
             } }))
         }
         if(editedTable) {
-            const timeOut = setTimeout(() => {
-                dispatch(changeLoading(true))
-            } , 3000 )
+            dispatch(changeLoading(true))
             dispatch(deleteTable({ id : editedTable.id , isSuccess : () => {
                 setOpenWarning(false);
                 if(setEditedTable) {
                     setEditedTable(undefined);
                 }
-                clearTimeout(timeOut);
                 dispatch(changeLoading(false))
             } }))
         }

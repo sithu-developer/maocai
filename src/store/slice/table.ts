@@ -17,9 +17,9 @@ const initialState : TableSliceInitialState = {
 }
 
 export const customerCheck = createAsyncThunk("tableSlice/customerCheck" , async( checkItems : CustomerCheckItems , thunkApi ) => {
-    const { companyId , tableId , isFail , isSuccess } = checkItems;
+    const { tableId , isFail , isSuccess } = checkItems;
     try {
-        const response = await fetch(`${envValues.apiUrl}/table?companyId=${companyId}&tableId=${tableId}`);
+        const response = await fetch(`${envValues.apiUrl}/table?tableId=${tableId}`);
         const { company , categories , foods } = await response.json();
         thunkApi.dispatch(setCompany(company));
         thunkApi.dispatch(setCategories(categories));

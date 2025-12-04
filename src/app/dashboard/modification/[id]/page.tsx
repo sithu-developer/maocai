@@ -37,11 +37,8 @@ const MenuPage = () => {
     if(!selectedCategory) return null;
 
     const handleCreateNewFood = () => {
-        const timeOut = setTimeout(() => {
-            dispatch(changeLoading(true))
-        } , 3000 )
+        dispatch(changeLoading(true))
         dispatch(createNewFood({...newFood , categoryId : selectedCategory.id , isSuccess : () => {
-            clearTimeout(timeOut);
             setNewFood(defaultNewFood);
             dispatch(changeLoading(false))
         }}))
@@ -49,11 +46,8 @@ const MenuPage = () => {
 
     const handleUpdateFood = () => {
         if(editedFood) {
-            const timeOut = setTimeout(() => {
-                dispatch(changeLoading(true))
-            } , 3000 )
+            dispatch(changeLoading(true))
             dispatch(updateFood({...editedFood , isSuccess : () => {
-                clearTimeout(timeOut);
                 setEditedFood(undefined);
                 dispatch(changeLoading(false))
             } }))
