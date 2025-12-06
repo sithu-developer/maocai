@@ -8,11 +8,13 @@ import { setFoods } from "./food";
 
 interface TableSliceInitialState {
     items : tables[]
+    customerTable : tables | null
     error : Error | null
 }
 
 const initialState : TableSliceInitialState = {
     items : [],
+    customerTable : null,
     error : null
 }
 
@@ -20,10 +22,11 @@ export const customerCheck = createAsyncThunk("tableSlice/customerCheck" , async
     const { tableId , isFail , isSuccess } = checkItems;
     try {
         const response = await fetch(`${envValues.apiUrl}/table?tableId=${tableId}`);
-        const { company , categories , foods } = await response.json();
+        const { company , categories , foods , customerTable } = await response.json();
         thunkApi.dispatch(setCompany(company));
         thunkApi.dispatch(setCategories(categories));
         thunkApi.dispatch(setFoods(foods));
+        thunkApi.dispatch(setCustomerTable(customerTable));
         if(isSuccess) {
             isSuccess();
         }
@@ -111,10 +114,13 @@ const tableSlice = createSlice({
         },
         removeTable : ( state , action : PayloadAction<tables>) => {
             state.items = state.items.filter(item => item.id !== action.payload.id );
+        },
+        setCustomerTable : ( state , action : PayloadAction<tables>) => {
+            state.customerTable = action.payload;
         }
     }
 });
 
-export const { setTables , addTable , replaceTable , removeTable } = tableSlice.actions;
+export const { setTables , addTable , replaceTable , removeTable , setCustomerTable } = tableSlice.actions;
 
 export default tableSlice.reducer;
