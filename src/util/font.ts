@@ -7,7 +7,7 @@ export const abyssinica = Abyssinica_SIL({
 
 export const nanum = Nanum_Myeongjo({
   subsets: ["latin"], 
-  weight: ["700"],
+  weight: ["400" ],
 });
 
 

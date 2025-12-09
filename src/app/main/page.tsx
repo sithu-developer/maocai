@@ -16,8 +16,8 @@ const MainPage = () => {
         <div className="w-screen h-screen pl-[6vw] pr-[2vw] bg-secondary">
             <div className="h-[40vh] flex justify-between items-end ">
                 <div className="w-[50vw] flex flex-col gap-[5vh] ">
-                    <p className={abyssinica.className + " text-[clamp(25px,5vw,68px)] text-primary"}>Welcome, bǎobèi !</p>
-                    <p className={nanum.className + " text-[clamp(16px,2vw,30px)] text-primary text-justify leading-10"} >We are so happy to have you join our cozy little corner of deliciousness.</p>
+                    <p className={abyssinica.className + " text-[clamp(25px,5vw,68px)] text-primary [-webkit-text-stroke:0.5px_#B6B837]"}>Welcome, bǎobèi !</p>
+                    <p className={nanum.className + " text-[clamp(16px,2vw,30px)] text-primary text-justify leading-10 [-webkit-text-stroke:0.6px] "} >We are so happy to have you join our cozy little corner of deliciousness.</p>
                 </div>
                 <Image alt="Chef cartoon" src={"/chinese-Chef.png"} width={800} height={800} className="w-auto h-full py-2" />
             </div>
@@ -38,8 +38,8 @@ const MainPage = () => {
                     :<p className="text-2xl" >No created category !</p>}
                 </div>
                 <div className="flex justify-between items-center py-3" >
-                    <p className={nanum.className + " text-[clamp(16px,2vw,30px)] text-primary text-justify "} >Open daily : 11 AM to 9 PM</p>
-                    <p className={nanum.className + " text-[clamp(16px,2vw,30px)] text-primary text-justify "} >12 * 85 st, Mandalay</p>
+                    <p className={nanum.className + " text-[clamp(16px,2vw,30px)] text-primary text-justify [-webkit-text-stroke:0.6px]"} >Open daily : 11 AM to 9 PM</p>
+                    <p className={nanum.className + " text-[clamp(16px,2vw,30px)] text-primary text-justify [-webkit-text-stroke:0.6px]"} >12 * 85 st, Mandalay</p>
                 </div>
             </div>
         </div>

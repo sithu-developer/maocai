@@ -37,6 +37,7 @@ model food {
   url        String
   categoryId String   @db.ObjectId
   Category   category @relation(fields: [categoryId], references: [id])
+  Orders     order[]
 }
 
 model tables {
@@ -45,4 +46,25 @@ model tables {
   imageUrl  String
   companyId String  @db.ObjectId
   Company   company @relation(fields: [companyId], references: [id])
+  Orders    order[]
+}
+
+model order {
+  id       String      @id @default(auto()) @map("_id") @db.ObjectId
+  tableId  String      @db.ObjectId
+  foodId   String      @db.ObjectId
+  quantity Int
+  orderSeq String
+  totalPriceForCurrentFood Int
+  status   ORDERSTATUS @default(ORDERED)
+  createdAt DateTime @default(now())
+  Table    tables      @relation(fields: [tableId], references: [id])
+  Food     food        @relation(fields: [foodId], references: [id])
+}
+
+enum ORDERSTATUS {
+  ORDERED
+  COOKING
+  DONE
+  CLEAR
 }

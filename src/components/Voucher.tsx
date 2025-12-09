@@ -1,9 +1,12 @@
 import { useAppSelector } from "@/store/hooks";
+import { VoucherItem } from "@/type/order";
 import { abyssinica } from "@/util/font"
 
+interface Props {
+    voucherItems : VoucherItem[]
+}
 
-
-const Voucher = () => {
+const Voucher = ( { voucherItems } : Props) => {
     const customerTable = useAppSelector(store => store.table.customerTable)
 
     if(!customerTable) return null;
@@ -11,6 +14,12 @@ const Voucher = () => {
     const getCurrentDate = () => {
         const date = new Date();
         return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+    }
+
+    const getTotalPrice = () => {
+        let totalPrice = 0;
+        voucherItems.forEach(item => totalPrice += item.price * item.quantity)
+        return totalPrice;
     }
 
     return (
@@ -30,13 +39,13 @@ const Voucher = () => {
                     </div>
                 </div>
                 <div className=" flex flex-col gap-1 px-1">
-                    {[ 1, 2, 3 , 4 ,5 ,6 , 7, 8,9,11,12,13,14,15,16,17,18,19].map(item => (
-                        <div key={item} className="flex items-center justify-between">
-                            <p className={abyssinica.className + "  text-[clamp(8px,1vw,11px)] text-voucherColor w-[32%]"}>Chicken Fire rice</p>
-                            <p className={abyssinica.className + "  text-[clamp(8px,1vw,11px)] text-voucherColor w-[8.5%] text-center"}>3</p>
+                    {voucherItems.map(item => (
+                        <div key={item.id} className="flex items-center justify-between">
+                            <p className={abyssinica.className + "  text-[clamp(8px,1vw,11px)] text-voucherColor w-[32%]"}>{item.name}</p>
+                            <p className={abyssinica.className + "  text-[clamp(8px,1vw,11px)] text-voucherColor w-[8.5%] text-center"}>{item.quantity}</p>
                             <div className="flex items-center gap-3 w-[40%]">
-                                <p className={abyssinica.className + "  text-[clamp(8px,1vw,11px)] text-voucherColor w-[45%] text-center"}>1400</p>
-                                <p className={abyssinica.className + "  text-[clamp(8px,1vw,11px)] text-voucherColor w-[55%] text-end"}>14000</p>
+                                <p className={abyssinica.className + "  text-[clamp(8px,1vw,11px)] text-voucherColor w-[45%] text-center"}>{item.price}</p>
+                                <p className={abyssinica.className + "  text-[clamp(8px,1vw,11px)] text-voucherColor w-[55%] text-end"}>{item.price * item.quantity}</p>
                             </div>
                         </div>
                     ))}
@@ -45,7 +54,7 @@ const Voucher = () => {
                     <div className="flex items-center justify-between mb-1 px-1 ">
                         <span className="w-[21%]" />
                         <p className={abyssinica.className + "  text-[clamp(8px,1vw,11px)] text-voucherColor w-[21%] text-center"}>Total</p>
-                        <p className={abyssinica.className + "  text-[clamp(8px,1vw,11px)] text-voucherColor w-[21.5%] text-end"}>Calc</p>
+                        <p className={abyssinica.className + "  text-[clamp(8px,1vw,11px)] text-voucherColor w-[21.5%] text-end"}>{getTotalPrice()}</p>
                     </div>
                     <div className="flex items-center justify-between px-1 ">
                         <p className={abyssinica.className + "  text-[clamp(8px,1vw,11px)] text-voucherColor w-[21%]"}>Tax</p>
