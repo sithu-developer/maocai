@@ -50,16 +50,15 @@ model tables {
 }
 
 model order {
-  id       String      @id @default(auto()) @map("_id") @db.ObjectId
-  tableId  String      @db.ObjectId
-  foodId   String      @db.ObjectId
-  quantity Int
-  orderSeq String
-  totalPriceForCurrentFood Int
-  status   ORDERSTATUS @default(ORDERED)
-  createdAt DateTime @default(now())
-  Table    tables      @relation(fields: [tableId], references: [id])
-  Food     food        @relation(fields: [foodId], references: [id])
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  tableId   String      @db.ObjectId
+  foodId    String      @db.ObjectId
+  quantity  Int
+  orderSeq  String
+  status    ORDERSTATUS @default(ORDERED)
+  createdAt DateTime    @default(now())
+  Table     tables      @relation(fields: [tableId], references: [id])
+  Food      food        @relation(fields: [foodId], references: [id])
 }
 
 enum ORDERSTATUS {

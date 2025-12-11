@@ -1,6 +1,7 @@
-const OrdersPage = () => {
+const OrdersPage = () => { // here
+
     return (
-        <div className=" w-screen bg-secondary p-5">
+        <div className=" w-screen bg-secondary p-5"> 
             Orders
         </div>
     )

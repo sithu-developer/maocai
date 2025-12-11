@@ -26,10 +26,10 @@ const Voucher = ( { voucherItems } : Props) => {
         <div className="bg-[#F8E6E6] grow rounded-[7px] border border-voucherColor flex flex-col gap-1 px-4 py-3 overflow-y-auto ">
             <p className={abyssinica.className + " text-center text-[clamp(10px,1.2vw,16px)] text-voucherColor"}>QiQi Mala</p>
             <div className="flex items-center justify-between">
-                <p className={abyssinica.className + " text-center text-[clamp(10px,1.2vw,16px)] text-voucherColor underline underline-offset-2"}>Table no.{customerTable.tableName}</p>
+                <p className={abyssinica.className + " text-center text-[clamp(10px,1.2vw,16px)] text-voucherColor underline underline-offset-2"}>Table: {customerTable.tableName}</p>
                 <p className={abyssinica.className + " text-center text-[clamp(10px,1.2vw,16px)] text-voucherColor underline underline-offset-2"}>{getCurrentDate()}</p>
             </div>
-            <div className="grow flex flex-col px-2 pt-4 gap-2">
+            {voucherItems.length ? <div className="grow flex flex-col px-2 pt-4 gap-2">
                 <div className="flex items-center justify-between">
                     <p className={abyssinica.className + "  text-[clamp(10px,1.2vw,16px)] text-voucherColor w-[32%]"}>Items</p>
                     <p className={abyssinica.className + "  text-[clamp(10px,1.2vw,16px)] text-voucherColor w-[8.5%] text-center"}>Qty</p>
@@ -75,6 +75,7 @@ const Voucher = ( { voucherItems } : Props) => {
                     <p className={abyssinica.className + " text-[clamp(10px,1.3vw,18px)] text-center mt-3 text-voucherColor"}>Thank You!</p>
                 </div>
             </div>
+            :<p className={abyssinica.className + " text-center text-[clamp(12px,1.2vw,20px)] text-voucherColor mt-20"}>Please, select your foods.</p>}
         </div>
     )
 }

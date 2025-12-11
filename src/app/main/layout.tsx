@@ -14,7 +14,7 @@ interface Props {
 const MainLayout = ( { children } : Props) => {
     const company = useAppSelector(store => store.company.item)
     const searchParams = useSearchParams();
-    const tableId = String(searchParams.get("tableId"));
+    const tableId = searchParams.get("tableId");
     const dispatch = useAppDispatch();
 
     useEffect(() => {

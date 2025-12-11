@@ -5,6 +5,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setCompany } from "./company";
 import { setCategories } from "./category";
 import { setFoods } from "./food";
+import { setOrders } from "./order";
 
 interface TableSliceInitialState {
     items : tables[]
@@ -22,11 +23,12 @@ export const customerCheck = createAsyncThunk("tableSlice/customerCheck" , async
     const { tableId , isFail , isSuccess } = checkItems;
     try {
         const response = await fetch(`${envValues.apiUrl}/table?tableId=${tableId}`);
-        const { company , categories , foods , customerTable } = await response.json();
+        const { company , categories , foods , customerTable , activeOrders } = await response.json();
         thunkApi.dispatch(setCompany(company));
         thunkApi.dispatch(setCategories(categories));
         thunkApi.dispatch(setFoods(foods));
         thunkApi.dispatch(setCustomerTable(customerTable));
+        thunkApi.dispatch(setOrders(activeOrders))
         if(isSuccess) {
             isSuccess();
         }
