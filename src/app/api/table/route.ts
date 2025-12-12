@@ -54,6 +54,6 @@ export const GET = async( req : NextRequest ) => {
     const categories = await prisma.category.findMany({ where : { companyId : company.id } , orderBy : { id : "asc" }});
     const categoryIds = categories.map(item => item.id);
     const foods = await prisma.food.findMany({ where : { categoryId : { in : categoryIds } } , orderBy : { id : "asc" } });
-    const activeOrders = await prisma.order.findMany({ where : { tableId , status : { not : "CLEAR" } }})
+    const activeOrders = await prisma.order.findMany({ where : { tableId , status : { not : "DONE" } }})
     return res.json({ company , categories , foods , customerTable : isTableExit , activeOrders })
 }
