@@ -1,4 +1,4 @@
-import { NewOrder } from "@/type/order";
+import { NewOrder, UpdatedOrder } from "@/type/order";
 import { envValues } from "@/util/envValues";
 import { order } from "@prisma/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -29,9 +29,27 @@ export const orderFoods = createAsyncThunk("" , async( orderToCreate : NewOrder 
             isSuccess();
         }
     } catch(err) {
+        if(isFail) {
+            isFail();
+        }
+    }
+})
+
+export const updateOrder = createAsyncThunk("" , async( orderToUpdate : UpdatedOrder , thunkApi ) => {
+    const { orderSeq , status , isFail , isSuccess } = orderToUpdate;
+    try {
+        const response = await fetch(`${envValues.apiUrl}/order` , {
+            method : "PUT",
+            headers : {
+                "content-type" : "application/json"
+            },
+            body : JSON.stringify({ orderSeq , status })
+        })
+        const {} = await response.json();
+        
+    } catch(err) {
 
     }
-
 })
 
 const orderSlice = createSlice({

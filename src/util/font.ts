@@ -1,13 +1,11 @@
-import { Abyssinica_SIL, Nanum_Myeongjo } from "next/font/google";
+import localFont  from "next/font/local";
 
-export const abyssinica = Abyssinica_SIL({
-  subsets: ["latin"],
-  weight: ["400"],
+export const abyssinica = localFont({
+  src: "../../public/fonts/abyssinica/AbyssinicaSIL-Regular.ttf",
 });
 
-export const nanum = Nanum_Myeongjo({
-  subsets: ["latin"], 
-  weight: ["400" ],
+export const nanum = localFont({
+  src : "../../public/fonts/nanum/NanumMyeongjo-Regular.ttf"
 });
 
 

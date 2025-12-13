@@ -1,4 +1,4 @@
-import { food } from "@prisma/client"
+import { food, ORDERSTATUS } from "@prisma/client"
 import { SuccessOrFailTypes } from "./category"
 
 export interface VoucherItem extends food {
@@ -13,4 +13,9 @@ interface SelectedFoodAndQty {
 export interface NewOrder extends SuccessOrFailTypes {
     tableId : string;
     selectedFoods : SelectedFoodAndQty[]
+}
+
+export interface UpdatedOrder extends SuccessOrFailTypes {
+    orderSeq : string;
+    status : ORDERSTATUS;
 }
