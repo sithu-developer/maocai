@@ -45,10 +45,15 @@ export const updateOrder = createAsyncThunk("" , async( orderToUpdate : UpdatedO
             },
             body : JSON.stringify({ orderSeq , status })
         })
-        const {} = await response.json();
-        
+        const { updatedOrders } = await response.json();
+        thunkApi.dispatch(replaceOrders(updatedOrders));
+        if(isSuccess) {
+            isSuccess();
+        }
     } catch(err) {
-
+        if(isFail) {
+            isFail();
+        }
     }
 })
 
@@ -58,10 +63,14 @@ const orderSlice = createSlice({
     reducers : {
         setOrders : ( state , action : PayloadAction<order[]> ) => {
             state.items = action.payload;
+        },
+        replaceOrders : ( state , action : PayloadAction<order[]> ) => {
+            const removeIds = action.payload.map(item => item.id)
+            state.items = [...state.items.filter(item => !removeIds.includes(item.id) ) , ...action.payload ]
         }
     }
 })
 
-export const { setOrders } = orderSlice.actions;
+export const { setOrders , replaceOrders } = orderSlice.actions;
 
 export default orderSlice.reducer;

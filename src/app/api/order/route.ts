@@ -1,4 +1,4 @@
-import { NewOrder } from "@/type/order";
+import { NewOrder, UpdatedOrder } from "@/type/order";
 import { prisma } from "@/util/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -16,3 +16,12 @@ export const POST = async( req : NextRequest ) => {
     return res.json({ newOrders });
 }
 
+export const PUT = async( req : NextRequest ) => {
+    const res = NextResponse;
+    const { orderSeq , status } = await req.json() as UpdatedOrder;
+    const isValid = orderSeq && status;
+    if(!isValid) return res.json({ error : "Bad request" } , { status : 400 });
+    await prisma.order.updateMany({ where : { orderSeq } , data : { status }});
+    const updatedOrders = await prisma.order.findMany({ where : { orderSeq } , orderBy : { id : "asc" }});
+    return res.json({ updatedOrders })
+}

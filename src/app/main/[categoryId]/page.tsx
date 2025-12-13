@@ -1,5 +1,6 @@
 "use client"
 import OrderList from "@/components/OrderList";
+import SpicyLevel from "@/components/SpicyLevel";
 import Voucher from "@/components/Voucher";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { changeLoading } from "@/store/slice/loading";
@@ -19,6 +20,7 @@ const CustomerOrderingPage = () => {
     const [ currentCategory , setCurrentCategory ] = useState<category>();
     const [ voucherItems , setVoucherItems ] = useState<VoucherItem[]>([]);
     const [ openOrderList , setOpenOrderList ] = useState<boolean>(false);
+    const [ openSpicyLevel , setOpenSpicyLevel ] = useState<boolean>(false);
     const tableId = useSearchParams().get("tableId");
     const dispatch = useAppDispatch();
 
@@ -104,6 +106,7 @@ const CustomerOrderingPage = () => {
                 <InboxIcon onClick={() => setOpenOrderList(true)} className="min-w-10 max-w-16 bg-secondary w-[5vw] p-1 text-primary rounded-2xl border border-primary shadow-xl shadow-primary cursor-pointer" />
             </div>
             <OrderList  openOrderList={openOrderList} setOpenOrderList={setOpenOrderList} />
+            <SpicyLevel openSpicyLevel={openOrderList} setOpenSpicyLevel={setOpenOrderList} />
         </div>
     )
 }
