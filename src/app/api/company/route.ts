@@ -20,7 +20,7 @@ export const POST = async( req : NextRequest ) => {
         const orders = await prisma.order.findMany({ where : { tableId : { in : tableIds } } , orderBy : { id : "asc" } })
         return res.json({ company : isExit , categories , foods , tables , orders });
     } else {
-        const newCompany = await prisma.company.create({ data : { name : "Company Name" , email }});
+        const newCompany = await prisma.company.create({ data : { name : "Company Name" , email , serviceChargePercentage : 0 , spicyTotalLevel : 0 , taxPercentage : 0 }});
         const newCategory = await prisma.category.create({ data : { name : "Category Name" , url : "/maocai-category.jpg" , companyId : newCompany.id }});
         const newFood = await prisma.food.create({ data : { name : "Food name" , price : 100 , url : "/pork.jpg" , categoryId : newCategory.id }})
         return res.json({ company : newCompany , categories : [ newCategory ] , foods : [ newFood ] , tables : [] , orders : [] });
@@ -31,11 +31,11 @@ export const PUT = async( req : NextRequest ) => {
     const res = NextResponse;
     const session = await getServerSession(authOptions);
     if(!session) return res.json({ error : "Unauthorzed" } , { status : 401 });
-    const { id , email , name } = await req.json() as UpdatedCompany;
-    const isValid = id && email && name;
+    const { id , email , name , serviceChargePercentage , spicyTotalLevel , taxPercentage } = await req.json() as UpdatedCompany;
+    const isValid = id && email && name && serviceChargePercentage !== undefined && spicyTotalLevel !== undefined && taxPercentage !== undefined;
     if(!isValid) return res.json({ error : "Bad request" } , { status : 400 });
     const isExit = await prisma.company.findUnique({ where : { id }});
     if(!isExit) return res.json({ error : "Bad request" } , { status : 400 });
-    const updatedCompany = await prisma.company.update({ where : { id } , data : { name , email }});
+    const updatedCompany = await prisma.company.update({ where : { id } , data : { name , email , serviceChargePercentage , taxPercentage , spicyTotalLevel }});
     return res.json({ updatedCompany });
 }

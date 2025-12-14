@@ -44,14 +44,14 @@ export const companyCheck = createAsyncThunk("companySlice/companyCheck" , async
 })
 
 export const updateCompany = createAsyncThunk("companySlice/updateCompany" , async( companyToUpdate : UpdatedCompany , thunkApi ) => {
-    const { id , name , email , isSuccess , isFail } = companyToUpdate;
+    const { id , name , email , serviceChargePercentage , spicyTotalLevel , taxPercentage , isSuccess , isFail } = companyToUpdate;
     try {
         const response = await fetch(`${envValues.apiUrl}/company` , {
             method : "PUT",
             headers : {
                 "content-type" : "application/json"
             },
-            body : JSON.stringify({ id , name , email })
+            body : JSON.stringify({ id , name , email , serviceChargePercentage , spicyTotalLevel , taxPercentage })
         });
         const { updatedCompany } = await response.json();
         thunkApi.dispatch(setCompany(updatedCompany))

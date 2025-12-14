@@ -9,6 +9,7 @@ export interface NewCategory extends SuccessOrFailTypes  {
     name : string
     url : string
     companyId : string
+    isMainDish : boolean
 }
 
 export interface UpdatedCategory extends category , SuccessOrFailTypes {}

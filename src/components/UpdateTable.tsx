@@ -33,13 +33,13 @@ const UpdateTable = ( { setUpdateTableOpen , updateTableOpen , editedTable , set
     }
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex justify-center items-center" onClick={() => {
+        <div className="fixed inset-0 backdrop-blur-xs flex justify-center items-center" onClick={() => {
             if(!isLoading) {
                 setUpdateTableOpen(false);
                 setEditedTableName(editedTable.tableName);
             }
         }}>
-            <div className="bg-secondary w-80 p-3 rounded-2xl flex flex-col gap-7 " onClick={(e) => e.stopPropagation() } >
+            <div className="bg-secondary w-80 p-3 rounded-2xl flex flex-col gap-7  border border-black" onClick={(e) => e.stopPropagation() } >
                 <p className="text-2xl px-1" >Update Table</p>
                 <input type="text" placeholder="Table name..." value={editedTableName} className="py-2 px-3 border border-black/50 rounded-md focus:outline-none" onChange={(e) => setEditedTableName(e.target.value)} />
                 <div className="flex justify-end items-center gap-4" >

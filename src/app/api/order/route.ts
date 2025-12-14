@@ -4,18 +4,19 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async( req : NextRequest ) => {
     const res = NextResponse;
-    const { tableId , selectedFoods } = await req.json() as NewOrder;
-    const isValid = tableId && selectedFoods.length;
+    const { tableId , selectedFoods , spicyLevel } = await req.json() as NewOrder;
+    const isValid = tableId && selectedFoods.length && spicyLevel !== undefined;
     if(!isValid) return res.json({ error : "Bad request" } , { status : 400 });
     const isExit = await prisma.tables.findUnique({ where : { id : tableId }});
     if(!isExit) return res.json({ error : "Bad request" } , { status : 400 });
     const orderSeq = Math.random().toString(36).slice(2,11)
     const newOrders = await prisma.$transaction(
-        selectedFoods.map(item => prisma.order.create({ data : { tableId , foodId : item.foodId , quantity : item.quantity , orderSeq }}))
+        selectedFoods.map(item => prisma.order.create({ data : { tableId , foodId : item.foodId , quantity : item.quantity , orderSeq , spicyLevel }}))
     );
     return res.json({ newOrders });
 }
 
+// status change from admin
 export const PUT = async( req : NextRequest ) => {
     const res = NextResponse;
     const { orderSeq , status } = await req.json() as UpdatedOrder;

@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const defaultNewCategory : NewCategory = {
-    name : "" , url : "" , companyId : ""
+    name : "" , url : "" , companyId : "" , isMainDish : false
 }
 
 const ModificationPage = () => {
@@ -55,7 +55,7 @@ const ModificationPage = () => {
                                 <Image alt="category photo" src={item.url} width={400} height={400} className=" h-full w-auto object-cover"  />
                             </div>
                             <div className="bg-primary border-t-2 border-t-borderColor rounded-b-[9px] py-1">
-                                <p className="text-center text-lg text-secondary" >{item.name}</p>
+                                <p className="text-center text-lg text-secondary text-[clamp(10px,1.2vw,16px)]" >{item.name}</p>
                             </div>
                             {(editedCategory && editedCategory.id === item.id) ? <ArrowPathIcon className="animate-spin absolute -top-3 -right-3 w-7 p-1 bg-primary text-secondary border rounded-2xl cursor-pointer" onClick={(e) => {
                                 e.stopPropagation();
@@ -103,6 +103,11 @@ const ModificationPage = () => {
                         </div>
                     </div>}
                 </div>}
+                <div  className="flex gap-3">
+                    {editedCategory ? <input type="checkbox" className="w-4" checked={editedCategory.isMainDish} onChange={(e ) => setEditedCategory({...editedCategory , isMainDish : e.target.checked})} />
+                    :<input type="checkbox" className="w-4" checked={newCategory.isMainDish} onChange={(e ) => setNewCategory({...newCategory , isMainDish : e.target.checked})} />}
+                    <label>Is Main Dish ?</label>
+                </div>
                 <div className="mt-2 flex gap-3">
                     <button className="border border-black cursor-pointer px-2 py-1 rounded-lg hover:bg-blue-400 select-none" onClick={() => {
                         if(editedCategory) {

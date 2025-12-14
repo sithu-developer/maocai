@@ -54,11 +54,18 @@ const CustomerOrderingPage = () => {
 
     const handleCreateNewOrder = () => {
         const selectedFoods = voucherItems.map(item => { return {foodId : item.id , quantity : item.quantity}})
-        dispatch(changeLoading(true));
-        dispatch(orderFoods({ tableId , selectedFoods , isSuccess : () => {
-            dispatch(changeLoading(false));
-            setVoucherItems([]);
-        }}));
+        const mainCategoryIds = categories.filter(item => item.isMainDish).map(item => item.id);
+        const mainCategoryFoods = voucherItems.filter(item => mainCategoryIds.includes(item.categoryId));
+        if(mainCategoryFoods.length) {
+            setOpenSpicyLevel(true);
+        } else {
+            dispatch(changeLoading(true));
+            dispatch(orderFoods({ tableId , selectedFoods , spicyLevel : null , isSuccess : () => {
+                dispatch(changeLoading(false));
+                setVoucherItems([]);
+            }}));
+        }
+        
     }
 
     return (
@@ -87,7 +94,7 @@ const CustomerOrderingPage = () => {
             <div className="w-[34vw] p-[2vw] flex flex-col gap-5">
                 <div className="flex items-center justify-between" >
                     {categories.filter(cat => cat.id !== currentCategory.id).map(item => (
-                        <div key={item.id}  onClick={() => setCurrentCategory(item)} className="relative w-[13vw] h-[14vw] min-h-[100px] rounded-[5px] border border-voucherColor flex flex-col justify-between shadow-lg shadow-primary" >
+                        <div key={item.id}  onClick={() => setCurrentCategory(item)} className="relative w-[13vw] h-[14vw] min-h-[100px] rounded-[5px] border border-voucherColor cursor-pointer flex flex-col justify-between shadow-lg shadow-primary" >
                             <div className="overflow-hidden grow w-full flex items-center justify-center rounded-t-[5px]" >
                                 <Image alt="category photo" src={item.url} width={800} height={800} className="h-full w-auto object-cover select-none"  />
                             </div>
@@ -106,7 +113,7 @@ const CustomerOrderingPage = () => {
                 <InboxIcon onClick={() => setOpenOrderList(true)} className="min-w-10 max-w-16 bg-secondary w-[5vw] p-1 text-primary rounded-2xl border border-primary shadow-xl shadow-primary cursor-pointer" />
             </div>
             <OrderList  openOrderList={openOrderList} setOpenOrderList={setOpenOrderList} />
-            <SpicyLevel openSpicyLevel={openOrderList} setOpenSpicyLevel={setOpenOrderList} />
+            <SpicyLevel tableId={tableId} voucherItems={voucherItems} setVoucherItems={setVoucherItems} openSpicyLevel={openSpicyLevel} setOpenSpicyLevel={setOpenSpicyLevel} />
         </div>
     )
 }

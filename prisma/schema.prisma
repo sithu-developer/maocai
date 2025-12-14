@@ -14,20 +14,24 @@ datasource db {
 }
 
 model company {
-  id       String     @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  email    String     @unique
-  Category category[]
-  Table    tables[]
+  id                      String     @id @default(auto()) @map("_id") @db.ObjectId
+  name                    String
+  email                   String     @unique
+  spicyTotalLevel         Int
+  taxPercentage           Int
+  serviceChargePercentage Int
+  Category                category[]
+  Table                   tables[]
 }
 
 model category {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  url       String
-  companyId String  @db.ObjectId
-  Company   company @relation(fields: [companyId], references: [id])
-  Food      food[]
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  url        String
+  isMainDish Boolean @default(false)
+  companyId  String  @db.ObjectId
+  Company    company @relation(fields: [companyId], references: [id])
+  Food       food[]
 }
 
 model food {
@@ -50,15 +54,16 @@ model tables {
 }
 
 model order {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
-  tableId   String      @db.ObjectId
-  foodId    String      @db.ObjectId
-  quantity  Int
-  orderSeq  String
-  status    ORDERSTATUS @default(ORDERED)
-  createdAt DateTime    @default(now())
-  Table     tables      @relation(fields: [tableId], references: [id])
-  Food      food        @relation(fields: [foodId], references: [id])
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  tableId    String      @db.ObjectId
+  foodId     String      @db.ObjectId
+  quantity   Int
+  orderSeq   String
+  spicyLevel Int?
+  status     ORDERSTATUS @default(ORDERED)
+  createdAt  DateTime    @default(now())
+  Table      tables      @relation(fields: [tableId], references: [id])
+  Food       food        @relation(fields: [foodId], references: [id])
 }
 
 enum ORDERSTATUS {

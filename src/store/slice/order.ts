@@ -14,14 +14,14 @@ const initialState : OrderSliceInitialState = {
 }
 
 export const orderFoods = createAsyncThunk("" , async( orderToCreate : NewOrder , thunkApi ) => {
-    const { tableId , selectedFoods , isFail , isSuccess } = orderToCreate;
+    const { tableId , selectedFoods , spicyLevel , isFail , isSuccess } = orderToCreate; 
     try {
         const response = await fetch(`${envValues.apiUrl}/order` , {
             method : "POST",
             headers : {
                 "content-type" : "application/json"
             },
-            body : JSON.stringify({ tableId , selectedFoods })
+            body : JSON.stringify({ tableId , selectedFoods , spicyLevel })
         });
         const { newOrders } = await response.json();
         thunkApi.dispatch(setOrders(newOrders));

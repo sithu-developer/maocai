@@ -16,14 +16,14 @@ const initialState : InitialStateType = {
 }
 
 export const createNewCategory = createAsyncThunk("categorySlice/createNewCategory" , async( newCategory : NewCategory , thunkApi ) => {
-    const { name , url , companyId , isFail , isSuccess } = newCategory;
+    const { name , url , companyId , isMainDish , isFail , isSuccess } = newCategory;
     try {
         const response = await fetch(`${envValues.apiUrl}/category` , {
             method : "POST",
             headers : {
                 "content-type" : "application/json"
             },
-            body : JSON.stringify({ name , url , companyId })
+            body : JSON.stringify({ name , url , companyId , isMainDish })
         })
         const { newCategory } = await response.json();
         thunkApi.dispatch(addNewCategory(newCategory))
@@ -38,14 +38,14 @@ export const createNewCategory = createAsyncThunk("categorySlice/createNewCatego
 })
 
 export const updateCategory = createAsyncThunk("categorySlice/updateCategory" , async( categoryToUpdate : UpdatedCategory , thunkApi ) => {
-    const { id , name , url , companyId , isFail , isSuccess } = categoryToUpdate;
+    const { id , name , url , companyId , isMainDish , isFail , isSuccess } = categoryToUpdate;
     try {
         const response = await fetch(`${envValues.apiUrl}/category` , {
             method : "PUT",
             headers : {
                 "content-type" : "application/json"
             },
-            body : JSON.stringify({ id , name , url , companyId })
+            body : JSON.stringify({ id , name , url , companyId , isMainDish })
         });
         const { updatedCategory } = await response.json();
         thunkApi.dispatch(replaceCategory(updatedCategory))

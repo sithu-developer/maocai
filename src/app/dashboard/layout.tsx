@@ -28,7 +28,7 @@ const BackofficeLayout = ( {children} : Props ) => {
                     } , 3000 )
                     dispatch(companyCheck({ email : session.user.email , isSuccess : () => {
                         clearTimeout(timeOut);
-                        dispatch(changeLoading(false))
+                        dispatch(changeLoading(false));
                         router.push("/dashboard/modification");
                     }}));
                 } else if(session && session.user && session.user.email) {

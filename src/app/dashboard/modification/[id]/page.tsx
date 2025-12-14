@@ -70,7 +70,7 @@ const MenuPage = () => {
                                 <Image alt="category photo" src={item.url} width={400} height={400} className=" h-auto w-full object-cover"  />
                             </div>
                             <div className="bg-primary border-t-2 border-t-borderColor rounded-b-[9px] py-1">
-                                <p className="text-center text-lg text-secondary" >{item.name} - {item.price}ks</p>
+                                <p className="text-center text-lg text-secondary text-[clamp(10px,1.2vw,16px)]" >{item.name} - {item.price}ks</p>
                             </div>
                             {(editedFood && editedFood.id === item.id) ? <ArrowPathIcon className="animate-spin absolute -top-3 -right-3 w-7 p-1 bg-primary text-secondary border rounded-2xl cursor-pointer" onClick={() => setEditedFood(undefined)} />
                             :<PencilIcon className=" absolute -top-3 -right-3 w-7 p-1 bg-primary text-secondary border rounded-2xl cursor-pointer" onClick={() => setEditedFood(item)} />}

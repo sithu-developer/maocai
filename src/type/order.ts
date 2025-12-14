@@ -10,8 +10,9 @@ interface SelectedFoodAndQty {
     quantity : number;
 }
 
-export interface NewOrder extends SuccessOrFailTypes {
+export interface NewOrder extends SuccessOrFailTypes { 
     tableId : string;
+    spicyLevel : number | null;
     selectedFoods : SelectedFoodAndQty[]
 }
 
