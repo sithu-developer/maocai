@@ -68,6 +68,7 @@ const OrdersPage = () => {
                                     return (
                                         <div key={category.id} className="w-full">
                                             <p className="text-voucherColor text-center underline underline-offset-3 text-[14px]">{category.name}</p>
+                                            {category.isMainDish && <p className="text-secondary px-1 py-0.5 rounded text-[10px] justify-self-center bg-foodBorder mt-1">Spicy Level {item.relatedOrders[0].spicyLevel}</p>}
                                             <div className="flex flex-col">
                                                 {categoryRelatedOrderedFoods.map(foodAndQty => {
                                                     return (
