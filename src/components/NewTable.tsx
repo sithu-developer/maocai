@@ -1,6 +1,8 @@
 "use client"
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { createTable } from "@/store/slice/table";
+import { envValues } from "@/util/envValues";
+import { generateQR } from "@/util/qrcode";
 import { useState } from "react";
 
 interface Props {
@@ -17,10 +19,11 @@ const NewTable = ( { newTableOpen , setNewTableOpen } : Props ) => {
 
     if(!newTableOpen) return null;
 
-    const handleCreateNewTable = () => {
+    const handleCreateNewTable = async() => {
         if(company) {
             // add image to blob
             setIsLoading(true)
+            const qrCodeImage = await generateQR(``); // generated qr image
             dispatch(createTable({ companyId : company.id , imageUrl : "/testQRUrl.png" , tableName : newTableName , isSuccess : () => {
                 setNewTableName("")
                 setIsLoading(false);
