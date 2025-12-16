@@ -4,11 +4,17 @@ import { abyssinica, nanum } from "@/util/font";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 
 const MainPage = () => {
     const categories = useAppSelector(store => store.category.items);
-    const tableId = useSearchParams().get("tableId");
+    const searchParams = useSearchParams();
+    const [tableId, setTableId] = useState<string | null>(null);
+
+    useEffect(() => {
+        setTableId(searchParams.get("tableId"));
+    }, [searchParams]);
     
     if(!tableId) return null;
 
