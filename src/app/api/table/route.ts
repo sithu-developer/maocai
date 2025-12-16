@@ -43,7 +43,7 @@ export const DELETE = async( req : NextRequest ) => {
 
 export const GET = async( req : NextRequest ) => {
     const res = NextResponse;
-    // no session here **
+    // no session here ** customer check
     const url = new URL(req.url);
     const tableId = url.searchParams.get("tableId");
     if(!tableId) return res.json({ error : "Bad request" } , { status : 400 });

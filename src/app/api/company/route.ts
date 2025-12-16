@@ -17,7 +17,7 @@ export const POST = async( req : NextRequest ) => {
         const foods = await prisma.food.findMany({ where : { categoryId : { in : categoriesIds }} , orderBy : { id : "asc" }});
         const tables = await prisma.tables.findMany({ where : { companyId : isExit.id } , orderBy : { id : "asc" }});
         const tableIds = tables.map(item => item.id);
-        const orders = await prisma.order.findMany({ where : { tableId : { in : tableIds } } , orderBy : { id : "asc" } })
+        const orders = await prisma.order.findMany({ where : { tableId : { in : tableIds } } , orderBy : { id : "asc" } });
         return res.json({ company : isExit , categories , foods , tables , orders });
     } else {
         const newCompany = await prisma.company.create({ data : { name : "Company Name" , email , serviceChargePercentage : 0 , spicyTotalLevel : 0 , taxPercentage : 0 }});

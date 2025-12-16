@@ -26,3 +26,21 @@ export const PUT = async( req : NextRequest ) => {
     const updatedOrders = await prisma.order.findMany({ where : { orderSeq } , orderBy : { id : "asc" }});
     return res.json({ updatedOrders })
 }
+
+
+export const GET = async( req : NextRequest ) => {
+    const res = NextResponse;
+    const url = new URL(req.url);
+    const tableId = url.searchParams.get("tableId");
+    const companyId = url.searchParams.get("companyId");
+    if(tableId) { // customer orders status check
+        const activeOrders = await prisma.order.findMany({ where : { tableId , status : { not : "DONE" } }})
+        return res.json({ activeOrders })
+    }
+    if(companyId) { // admin orders check
+        const tables = await prisma.tables.findMany({ where : { companyId } , orderBy : { id : "asc" }});
+        const tableIds = tables.map(item => item.id);
+        const orders = await prisma.order.findMany({ where : { tableId : { in : tableIds } } , orderBy : { id : "asc" } });
+        return res.json({ activeOrders : orders })
+    }    
+}

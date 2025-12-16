@@ -1,7 +1,7 @@
 "use client"
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { changeLoading } from "@/store/slice/loading";
-import { updateOrder } from "@/store/slice/order";
+import { checkOrders, updateOrder } from "@/store/slice/order";
 import { food, order, ORDERSTATUS, tables } from "@prisma/client";
 import { useEffect, useState } from "react";
 
@@ -11,6 +11,7 @@ interface OrderListType {
 }
 
 const OrdersPage = () => {
+    const company = useAppSelector(store => store.company.item);
     const orders = useAppSelector(store => store.order.items);
     const foods = useAppSelector(store => store.food.items);
     const tables = useAppSelector(store => store.table.items);
@@ -30,11 +31,22 @@ const OrdersPage = () => {
         }
     } , [ orders ])
 
+    useEffect(() => {
+        if(company) {
+            const interval = setInterval(() => {
+                dispatch(checkOrders({ companyId : company.id }))
+            } , 3000);
+            return () => {
+                clearInterval(interval)
+            }
+        }
+    } , [ company ])
+
     const handleUpdateOrder = ( { orderSeq , status } : { orderSeq : string , status : ORDERSTATUS }) => {
         dispatch(changeLoading(true))
         dispatch(updateOrder({ orderSeq , status , isSuccess : () => {
             dispatch(changeLoading(false))
-        } }))
+        }}))
     }
 
     return (

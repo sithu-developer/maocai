@@ -1,4 +1,4 @@
-import { NewOrder, UpdatedOrder } from "@/type/order";
+import { CustomerOrderCheckItemType, NewOrder, UpdatedOrder } from "@/type/order";
 import { envValues } from "@/util/envValues";
 import { order } from "@prisma/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -13,7 +13,30 @@ const initialState : OrderSliceInitialState = {
     error : null
 }
 
-export const orderFoods = createAsyncThunk("" , async( orderToCreate : NewOrder , thunkApi ) => {
+export const checkOrders = createAsyncThunk("orderSlice/checkOrders" , async( customerOrderCheckItem : CustomerOrderCheckItemType , thunkApi ) => {
+    const { tableId , companyId , isFail , isSuccess } = customerOrderCheckItem;
+    try {
+        if(tableId) {
+            const response = await fetch(`${envValues.apiUrl}/order?tableId=${tableId}`);
+            const { activeOrders } = await response.json();
+            thunkApi.dispatch(setOrders(activeOrders));
+        }
+        if(companyId) {
+            const response = await fetch(`${envValues.apiUrl}/order?companyId=${companyId}`);
+            const { activeOrders } = await response.json();
+            thunkApi.dispatch(setOrders(activeOrders));
+        }
+        if(isSuccess) {
+            isSuccess();
+        }
+    } catch(err) {
+        if(isFail) {
+            isFail();
+        }
+    }
+})
+
+export const orderFoods = createAsyncThunk("orderSlice/orderFoods" , async( orderToCreate : NewOrder , thunkApi ) => {
     const { tableId , selectedFoods , spicyLevel , isFail , isSuccess } = orderToCreate; 
     try {
         const response = await fetch(`${envValues.apiUrl}/order` , {
@@ -35,7 +58,7 @@ export const orderFoods = createAsyncThunk("" , async( orderToCreate : NewOrder 
     }
 })
 
-export const updateOrder = createAsyncThunk("" , async( orderToUpdate : UpdatedOrder , thunkApi ) => {
+export const updateOrder = createAsyncThunk("orderSlice/updateOrder" , async( orderToUpdate : UpdatedOrder , thunkApi ) => {
     const { orderSeq , status , isFail , isSuccess } = orderToUpdate;
     try {
         const response = await fetch(`${envValues.apiUrl}/order` , {

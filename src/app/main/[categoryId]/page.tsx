@@ -113,7 +113,7 @@ const CustomerOrderingPage = () => {
             {orders.length && <div className="fixed bottom-5 left-5" >
                 <InboxIcon onClick={() => setOpenOrderList(true)} className="min-w-10 max-w-16 bg-secondary w-[5vw] p-1 text-primary rounded-2xl border border-primary shadow-xl shadow-primary cursor-pointer" />
             </div>}
-            <OrderList  openOrderList={openOrderList} setOpenOrderList={setOpenOrderList} />
+            <OrderList tableId={tableId} openOrderList={openOrderList} setOpenOrderList={setOpenOrderList} />
             <SpicyLevel tableId={tableId} voucherItems={voucherItems} setVoucherItems={setVoucherItems} openSpicyLevel={openSpicyLevel} setOpenSpicyLevel={setOpenSpicyLevel} />
         </div>
     )
