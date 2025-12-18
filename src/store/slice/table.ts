@@ -5,7 +5,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setCompany } from "./company";
 import { setCategories } from "./category";
 import { setFoods } from "./food";
-import { setOrders } from "./order";
+import { removeOrdersFromTable, setOrders } from "./order";
 
 interface TableSliceInitialState {
     items : tables[]
@@ -40,14 +40,14 @@ export const customerCheck = createAsyncThunk("tableSlice/customerCheck" , async
 })
 
 export const createTable = createAsyncThunk("tableSlice/createTable" , async( tableToCreate : NewTable , thunkApi ) => {
-    const { tableName , imageUrl , companyId , isFail , isSuccess } = tableToCreate;
+    const { tableName , companyId , isFail , isSuccess } = tableToCreate;
     try {
         const response = await fetch(`${envValues.apiUrl}/table` , {
             method : "POST",
             headers : {
                 "content-type" : "application/json"
             },
-            body : JSON.stringify({ tableName , imageUrl , companyId })
+            body : JSON.stringify({ tableName , companyId })
         });
         const { newTable } = await response.json();
         thunkApi.dispatch(addTable(newTable))
@@ -91,6 +91,7 @@ export const deleteTable = createAsyncThunk("" , async( tableToDelete : DeleteTa
         });
         const { deletedTable } = await response.json();
         thunkApi.dispatch(removeTable(deletedTable));
+        thunkApi.dispatch(removeOrdersFromTable(deletedTable))
         if(isSuccess) {
             isSuccess();
         }

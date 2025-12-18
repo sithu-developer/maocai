@@ -1,6 +1,6 @@
 import { CustomerOrderCheckItemType, NewOrder, UpdatedOrder } from "@/type/order";
 import { envValues } from "@/util/envValues";
-import { order } from "@prisma/client";
+import { order, tables } from "@prisma/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface OrderSliceInitialState {
@@ -90,10 +90,13 @@ const orderSlice = createSlice({
         replaceOrders : ( state , action : PayloadAction<order[]> ) => {
             const removeIds = action.payload.map(item => item.id)
             state.items = [...state.items.filter(item => !removeIds.includes(item.id) ) , ...action.payload ]
+        },
+        removeOrdersFromTable : ( state , action : PayloadAction<tables>) => {
+            state.items = state.items.filter(item => item.tableId !== action.payload.id )
         }
     }
 })
 
-export const { setOrders , replaceOrders } = orderSlice.actions;
+export const { setOrders , replaceOrders , removeOrdersFromTable } = orderSlice.actions;
 
 export default orderSlice.reducer;

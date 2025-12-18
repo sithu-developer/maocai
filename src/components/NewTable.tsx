@@ -1,8 +1,6 @@
 "use client"
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { createTable } from "@/store/slice/table";
-import { envValues } from "@/util/envValues";
-import { generateQR } from "@/util/qrcode";
 import { useState } from "react";
 
 interface Props {
@@ -19,12 +17,10 @@ const NewTable = ( { newTableOpen , setNewTableOpen } : Props ) => {
 
     if(!newTableOpen) return null;
 
-    const handleCreateNewTable = async() => {
+    const handleCreateNewTable = () => {
         if(company) {
-            // add image to blob
             setIsLoading(true)
-            const qrCodeImage = await generateQR(``); // generated qr image
-            dispatch(createTable({ companyId : company.id , imageUrl : "/testQRUrl.png" , tableName : newTableName , isSuccess : () => {
+            dispatch(createTable({ companyId : company.id , tableName : newTableName , isSuccess : () => {
                 setNewTableName("")
                 setIsLoading(false);
                 setNewTableOpen(false);
@@ -43,7 +39,7 @@ const NewTable = ( { newTableOpen , setNewTableOpen } : Props ) => {
                 <p className="text-2xl px-1" >New Table</p>
                 <input type="text" placeholder="Table name..." className="py-2 px-3 border border-black/50 rounded-md focus:outline-none" onChange={(e) => setNewTableName(e.target.value)} />
                 <div className="flex justify-end items-center gap-4" >
-                    <button className="border rounded py-1 px-2 cursor-pointer hover:bg-primary/20 select-none" onClick={() => {
+                    <button disabled={isLoading} className="border rounded py-1 px-2 cursor-pointer hover:bg-primary/20 select-none disabled:bg-gray-500 disabled:text-gray-800 disabled:cursor-not-allowed " onClick={() => {
                         if(!isLoading) {
                             setNewTableOpen(false);
                             setNewTableName("")

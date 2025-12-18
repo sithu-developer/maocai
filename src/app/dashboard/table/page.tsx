@@ -56,11 +56,11 @@ const TablePage = () => {
                 </div>
             </div>
             <div className="flex flex-wrap gap-5 mt-5">
-                {tables.map(item => ( 
+                {tables.length ? tables.map(item => ( 
                     <div key={item.id} className="flex flex-col gap-1 items-center" >
                         <p className="bg-primary text-secondary py-0.5 px-3 rounded-2xl border-2 border-borderColor ">{item.tableName}</p>
                         <div className="relative">
-                            <Image alt="QR code" src={"/testQRUrl.png"} width={400} height={400} className="w-40 h-auto rounded-2xl shadow-xl border border-black" />
+                            <Image alt="QR code" src={item.imageUrl} width={400} height={400} className="w-40 h-auto rounded-2xl shadow-xl border border-black" />
                             {(editedTable && editedTable.id === item.id) ? <ArrowPathIcon className="animate-spin absolute -top-3 -right-3 w-7 p-1 bg-primary text-secondary border rounded-2xl cursor-pointer" onClick={(e) => {
                                 e.stopPropagation();
                                 setEditedTable(undefined)
@@ -75,7 +75,8 @@ const TablePage = () => {
                             Print
                         </button>
                     </div>
-                ))}
+                ))
+                :<p>No created Table !</p>}
             </div>
             <NewTable newTableOpen={newTableOpen} setNewTableOpen={setNewTableOpen} />
             {editedTable && <UpdateTable setUpdateTableOpen={setUpdateTableOpen} updateTableOpen={updateTableOpen} editedTable={editedTable} setEditedTable={setEditedTable} />}

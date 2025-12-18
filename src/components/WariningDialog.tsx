@@ -62,6 +62,7 @@ const WarningDialog = ( { openWarning , setOpenWarning , categoryToDelete , setE
                     <h2 className="text-xl text-red-600 mb-4 font-bold">Delete </h2>
 
                     {categoryToDelete && <p className="mb-1 text-blue-500">"Delete this Category will also delete all the foods under that category!"</p>}
+                    {editedTable && <p className="mb-1 text-blue-500">"Delete this table will also delete all the orders related to that table!"</p>}
                     <p className="mb-4">Are you sure that you want to Delete this {categoryToDelete && "category \"" + categoryToDelete.name + "\"?"}{foodToDelete && "food \"" + foodToDelete.name + "\"?"}{editedTable && "Table \"" + editedTable.tableName + "\"?"}</p>
 
                     <div className="flex justify-end gap-2">
