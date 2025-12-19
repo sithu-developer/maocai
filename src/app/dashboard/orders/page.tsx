@@ -1,13 +1,20 @@
 "use client"
+import WarningDialog from "@/components/WariningDialog";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { changeLoading } from "@/store/slice/loading";
 import { checkOrders, updateOrder } from "@/store/slice/order";
+import { TrashIcon } from "@heroicons/react/16/solid";
 import { food, order, ORDERSTATUS, tables } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 interface OrderListType {
     orderSeq : string;
     relatedOrders : order[];
+}
+
+export interface SelectedOrderToDeleteType {
+    orderSeq : string;
+    createdDate : Date
 }
 
 const OrdersPage = () => {
@@ -18,6 +25,8 @@ const OrdersPage = () => {
     const categories = useAppSelector(store => store.category.items);
     const [ currentOrderStatus , setCurrentOrderStatus ] = useState<ORDERSTATUS>("ORDERED");
     const [ orderLists , setOrderLists ] = useState<OrderListType[]>([]);
+    const [ openWarning , setOpenWarning ] = useState<boolean>(false);
+    const [ selectedOrderSeqAndCreatedDate , setSelectedOrderSeqAndCreatedDate ] = useState<SelectedOrderToDeleteType | null>(null);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -57,7 +66,7 @@ const OrdersPage = () => {
                     <div onClick={() => setCurrentOrderStatus(item)} key={item} className={`${item === currentOrderStatus ? "bg-primary text-secondary" : "bg-primary/30"} border border-voucherColor text-[18px] px-3 py-1 rounded-3xl cursor-pointer`} >{item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()}</div>
                 ))}
             </div>
-            <div className="flex flex-wrap gap-5 mt-5 overflow-auto">
+            <div className="flex flex-wrap gap-5 mt-5 overflow-auto p-3">
                 {orderLists.filter(item => item.relatedOrders[0].status === currentOrderStatus).map(item => {
                     const relatedFoodsAndQuantity = item.relatedOrders.map(relatedOrder => {
                         const food = foods.find(f => f.id === relatedOrder.foodId) as food;
@@ -66,9 +75,18 @@ const OrdersPage = () => {
                     const relatedTable = tables.find(table => table.id === item.relatedOrders[0].tableId) as tables;
                     const date = new Date(item.relatedOrders[0].createdAt);
                     return(
-                        <div key={item.orderSeq} className="flex flex-col justify-between  bg-[#F8E6E6] w-60 h-fit rounded-2xl border border-voucherColor" >
+                        <div key={item.orderSeq} className="relative flex flex-col justify-between  bg-[#F8E6E6] w-60 h-fit rounded-2xl border border-voucherColor" >
+                            {item.relatedOrders[0].status === ORDERSTATUS.DONE ? 
+                            <TrashIcon className="absolute -top-2.5 -right-2.5 w-9 p-1 bg-[#F8E6E6] border border-voucherColor rounded-3xl cursor-pointer text-red-500 hover:bg-red-200 " onClick={() => {
+                                setOpenWarning(true);
+                                setSelectedOrderSeqAndCreatedDate({ orderSeq : item.orderSeq , createdDate : date });
+                            }} />
+                            : undefined}
                             <div className=" flex flex-col items-center gap-3 p-3 w-full h-90 overflow-y-auto">
-                                <p className="bg-primary text-secondary py-0.5 px-3 rounded-2xl border-2 border-borderColor w-fit">{relatedTable.tableName}</p>
+                                <div className="flex">
+                                    <p className="bg-primary text-center text-secondary py-0.5 px-2 rounded-l-2xl border-2 border-borderColor w-fit  text-[14px]">T : {relatedTable.tableName}</p>
+                                    <p className="bg-primary text-secondary py-0.5 px-2 rounded-r-2xl border-2 border-l-0 border-borderColor w-fit text-[14px]">Seq : {item.orderSeq}</p>
+                                </div>
                                 <p className="text-voucherColor text-sm w-full">Time: {date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + "_" + date.getHours() + ":" + date.getMinutes()}</p>
                                 <div className="flex justify-between w-full font-semibold">
                                     <p className="text-voucherColor">Items</p>
@@ -104,6 +122,7 @@ const OrdersPage = () => {
                     )
                 })}
             </div>
+            {selectedOrderSeqAndCreatedDate && <WarningDialog selectedOrderSeqAndCreatedDate={selectedOrderSeqAndCreatedDate} setSelectedOrderSeqAndCreatedDate={setSelectedOrderSeqAndCreatedDate} openWarning={openWarning} setOpenWarning={setOpenWarning} />}
         </div>
     )
 }

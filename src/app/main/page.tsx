@@ -15,7 +15,7 @@ const MainPage = () => {
     return (
         <div className="w-screen h-screen pl-[6vw] pr-[2vw] bg-secondary">
             <div className="h-[40vh] flex justify-between items-end ">
-                <div className="w-[50vw] flex flex-col gap-[5vh] ">
+                <div className="w-[50vw] flex flex-col gap-2 sm:gap-[5vh] ">
                     <p className={abyssinica.className + " text-[clamp(25px,5vw,68px)] text-primary [-webkit-text-stroke:0.5px_#B6B837]"}>Welcome, bǎobèi !</p>
                     <p className={nanum.className + " text-[clamp(16px,2vw,30px)] text-primary text-justify leading-10 [-webkit-text-stroke:0.6px] "} >We are so happy to have you join our cozy little corner of deliciousness.</p>
                 </div>
@@ -26,10 +26,10 @@ const MainPage = () => {
                     {categories.length ? categories.map(item => (
                         <Link key={item.id} href={`/main/${item.id}?tableId=${tableId}`} style={{ textDecoration : "none" }} >  
                             <div className="relative h-[21vw] w-[19vw] max-w-68 max-h-75 rounded-[9px] border-2 border-borderColor flex flex-col justify-between" >
-                                <div className="overflow-hidden grow w-full flex items-center justify-center rounded-t-[9px]" >
+                                <div className="overflow-hidden grow w-full flex items-center justify-center rounded-t-[7.4px]" >
                                     <Image alt="category photo" src={item.url} width={800} height={800} className="h-full w-auto object-cover"  />
                                 </div>
-                                <div className="bg-primary border-t-2 border-t-borderColor rounded-b-[9px] py-1">
+                                <div className="bg-primary border-t-2 border-t-borderColor rounded-b-[7.4px] py-1">
                                     <p className={nanum.className + " text-center text-[clamp(16px,2vw,30px)] text-secondary"} >{item.name}</p>
                                 </div>
                             </div>

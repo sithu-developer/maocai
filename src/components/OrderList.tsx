@@ -52,6 +52,8 @@ const OrderList = ( { openOrderList , setOpenOrderList , tableId } : Props ) => 
                 return { orderSeq : item , relatedOrders , voucherItems }
             }).sort((a,b) => a.relatedOrders[0].id.localeCompare(b.relatedOrders[0].id) );
             setOrderLists(orderLists)
+        } else {
+            setOrderLists([])
         }
     } , [ orders , foods ])
 

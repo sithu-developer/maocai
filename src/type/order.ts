@@ -21,6 +21,10 @@ export interface UpdatedOrder extends SuccessOrFailTypes {
     status : ORDERSTATUS;
 }
 
+export interface DeletedOrder extends SuccessOrFailTypes {
+    orderSeq : string;
+}
+
 export interface CustomerOrderCheckItemType extends SuccessOrFailTypes {
     tableId ?: string;
     companyId ?: string;

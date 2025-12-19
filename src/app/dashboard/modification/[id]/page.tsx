@@ -32,7 +32,6 @@ const MenuPage = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
 
-    console.log(updatedImageFile , editedFood?.url)
 
     useEffect(() => {
         if(categories.length && id ) {

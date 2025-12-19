@@ -1,4 +1,4 @@
-import { CustomerOrderCheckItemType, NewOrder, UpdatedOrder } from "@/type/order";
+import { CustomerOrderCheckItemType, DeletedOrder, NewOrder, UpdatedOrder } from "@/type/order";
 import { envValues } from "@/util/envValues";
 import { order, tables } from "@prisma/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -16,12 +16,12 @@ const initialState : OrderSliceInitialState = {
 export const checkOrders = createAsyncThunk("orderSlice/checkOrders" , async( customerOrderCheckItem : CustomerOrderCheckItemType , thunkApi ) => {
     const { tableId , companyId , isFail , isSuccess } = customerOrderCheckItem;
     try {
-        if(tableId) {
+        if(tableId) { // from orderlist customer
             const response = await fetch(`${envValues.apiUrl}/order?tableId=${tableId}`);
             const { activeOrders } = await response.json();
             thunkApi.dispatch(setOrders(activeOrders));
         }
-        if(companyId) {
+        if(companyId) { // from order admin
             const response = await fetch(`${envValues.apiUrl}/order?companyId=${companyId}`);
             const { activeOrders } = await response.json();
             thunkApi.dispatch(setOrders(activeOrders));
@@ -80,6 +80,26 @@ export const updateOrder = createAsyncThunk("orderSlice/updateOrder" , async( or
     }
 })
 
+export const deleteOrder = createAsyncThunk("orderSlice/deleteOrder" , async( orderToDelete : DeletedOrder , thunkApi ) => {
+    const { orderSeq , isFail , isSuccess } = orderToDelete;
+    try {
+        const response = await fetch(`${envValues.apiUrl}/order?orderSeq=${orderSeq}` , {
+            method : "DELETE"
+        });
+        const { isDone } = await response.json();
+        if(isDone) {
+            thunkApi.dispatch(removeOrdersFromAdmin(orderSeq))
+            if(isSuccess) {
+                isSuccess();
+            }
+        }
+    } catch(err) {
+        if(isFail) {
+            isFail();
+        }
+    }
+})
+
 const orderSlice = createSlice({
     name : "order slice",
     initialState,
@@ -92,11 +112,14 @@ const orderSlice = createSlice({
             state.items = [...state.items.filter(item => !removeIds.includes(item.id) ) , ...action.payload ]
         },
         removeOrdersFromTable : ( state , action : PayloadAction<tables>) => {
-            state.items = state.items.filter(item => item.tableId !== action.payload.id )
+            state.items = state.items.filter(item => item.tableId !== action.payload.id );
+        },
+        removeOrdersFromAdmin : ( state , action : PayloadAction<string>) => {
+            state.items = state.items.filter(item => item.orderSeq !== action.payload);
         }
     }
 })
 
-export const { setOrders , replaceOrders , removeOrdersFromTable } = orderSlice.actions;
+export const { setOrders , replaceOrders , removeOrdersFromTable , removeOrdersFromAdmin } = orderSlice.actions;
 
 export default orderSlice.reducer;

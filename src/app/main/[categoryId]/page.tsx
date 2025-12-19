@@ -96,10 +96,10 @@ const CustomerOrderingPage = () => {
                 <div className="flex items-center justify-between" >
                     {categories.filter(cat => cat.id !== currentCategory.id).map(item => (
                         <div key={item.id}  onClick={() => setCurrentCategory(item)} className="relative w-[13vw] h-[14vw] min-h-[100px] rounded-[5px] border border-voucherColor cursor-pointer flex flex-col justify-between shadow-lg shadow-primary" >
-                            <div className="overflow-hidden grow w-full flex items-center justify-center rounded-t-[5px]" >
+                            <div className="overflow-hidden grow w-full flex items-center justify-center rounded-t-[4.2px]" >
                                 <Image alt="category photo" src={item.url} width={800} height={800} className="h-full w-auto object-cover select-none"  />
                             </div>
-                            <div className="bg-primary border-t border-t-borderColor rounded-b-[5px] py-1">
+                            <div className="bg-primary border-t border-t-borderColor rounded-b-[4.2px] py-1">
                                 <p className={abyssinica.className + " text-center text-[clamp(10px,1.2vw,16px)] text-white select-none"} >{item.name}</p>
                             </div>
                         </div>
@@ -110,9 +110,10 @@ const CustomerOrderingPage = () => {
                     <button onClick={handleCreateNewOrder} disabled={!voucherItems.length} className={abyssinica.className + " text-[clamp(10px,2vw,18px)] bg-[#db3030] text-white cursor-pointer py-2 rounded-3xl shadow-xl shadow-primary w-full hover:bg-primary select-none disabled:bg-black/55 disabled:text-black/70 disabled:cursor-not-allowed disabled:shadow-gray-600"}>Order Comfirm</button>
                 </div>
             </div>
-            {orders.length && <div className="fixed bottom-5 left-5" >
+            {orders.length ? <div className="fixed bottom-5 left-5" >
                 <InboxIcon onClick={() => setOpenOrderList(true)} className="min-w-10 max-w-16 bg-secondary w-[5vw] p-1 text-primary rounded-2xl border border-primary shadow-xl shadow-primary cursor-pointer" />
-            </div>}
+            </div>
+            : undefined}
             <OrderList tableId={tableId} openOrderList={openOrderList} setOpenOrderList={setOpenOrderList} />
             <SpicyLevel tableId={tableId} voucherItems={voucherItems} setVoucherItems={setVoucherItems} openSpicyLevel={openSpicyLevel} setOpenSpicyLevel={setOpenSpicyLevel} />
         </div>

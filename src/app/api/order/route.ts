@@ -1,6 +1,8 @@
 import { NewOrder, UpdatedOrder } from "@/type/order";
 import { prisma } from "@/util/prisma";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export const POST = async( req : NextRequest ) => {
     const res = NextResponse;
@@ -19,6 +21,8 @@ export const POST = async( req : NextRequest ) => {
 // status change from admin
 export const PUT = async( req : NextRequest ) => {
     const res = NextResponse;
+    const session = await getServerSession(authOptions);
+    if(!session) return res.json({ error : "unauthorized" } , { status : 401 })
     const { orderSeq , status } = await req.json() as UpdatedOrder;
     const isValid = orderSeq && status;
     if(!isValid) return res.json({ error : "Bad request" } , { status : 400 });
@@ -43,4 +47,15 @@ export const GET = async( req : NextRequest ) => {
         const orders = await prisma.order.findMany({ where : { tableId : { in : tableIds } } , orderBy : { id : "asc" } });
         return res.json({ activeOrders : orders })
     }    
+}
+
+export const DELETE = async( req : NextRequest ) => {
+    const res = NextResponse;
+    const session = await getServerSession(authOptions);
+    if(!session) return res.json({ error : "unauthorized" } , { status : 401 });
+    const url = new URL(req.url);
+    const orderSeq = url.searchParams.get("orderSeq");
+    if(!orderSeq) return res.json({ error : "Bad request" } , { status : 400 });
+    await prisma.order.deleteMany({ where : { orderSeq }});
+    return res.json({ isDone : true });
 }
