@@ -114,7 +114,7 @@ const MenuPage = () => {
                     :<p>No created food !</p>}
                 </div>
             </div>
-            <div className="bg-[#14b7cc] grow p-5 flex flex-col gap-5">
+            <div className=" grow p-5 flex flex-col gap-5">
                 <div className={`flex ${editedFood ? "justify-between" : "justify-center"} items-center`} >
                     <p className="text-2xl">{editedFood ? "Edit Food" : "New Food"}</p>
                     {editedFood && <div className="p-1.5 border border-red-800 rounded-md cursor-pointer hover:bg-gray-400" onClick={() => setOpenWarning(true)}>

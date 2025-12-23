@@ -100,7 +100,7 @@ const ModificationPage = () => {
                     :<p>No created category !</p>}
                 </div>
             </div>
-            <div className="bg-[#14b7cc] grow p-5 flex flex-col gap-5">
+            <div className=" grow p-5 flex flex-col gap-5">
                 <div className={`flex ${editedCategory ? "justify-between" : "justify-center"} items-center`} >
                     <p className="text-2xl">{editedCategory ? "Edit Category" : "New Category"}</p>
                     {editedCategory && <div className="p-1.5 border border-red-800 rounded-md cursor-pointer hover:bg-gray-400" onClick={() => setOpenWarning(true)}>
