@@ -21,25 +21,17 @@ const BackofficeLayout = ( {children} : Props ) => {
     
     
         useEffect(() => {
-            if(!company) {
-                if(session && session.user && session.user.email && pathname === "/dashboard") {
-                    const timeOut = setTimeout(() => {
-                        dispatch(changeLoading(true))
-                    } , 3000 )
-                    dispatch(companyCheck({ email : session.user.email , isSuccess : () => {
-                        clearTimeout(timeOut);
-                        dispatch(changeLoading(false));
-                        router.push("/dashboard/modification");
-                    }}));
-                } else if(session && session.user && session.user.email) {
-                    const timeOut = setTimeout(() => {
-                        dispatch(changeLoading(true))
-                    } , 3000 )
-                    dispatch(companyCheck({ email : session.user.email , isSuccess : () => {
-                        clearTimeout(timeOut);
-                        dispatch(changeLoading(false))
-                    } }));
+            if(!company && session && session.user && session.user.email) {
+                if(pathname === "/dashboard") {
+                    router.push("/dashboard/modification")
                 }
+                const timeOut = setTimeout(() => {
+                    dispatch(changeLoading(true))
+                } , 3000 )
+                dispatch(companyCheck({ email : session.user.email , isSuccess : () => {
+                    clearTimeout(timeOut);
+                    dispatch(changeLoading(false))
+                } }));
             }
         } , [ session , pathname , company ])
     
