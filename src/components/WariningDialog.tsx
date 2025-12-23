@@ -81,7 +81,8 @@ const WarningDialog = ( { openWarning , setOpenWarning , categoryToDelete , setE
                 <div className="bg-white w-80 p-6 rounded-xl shadow-lg" onClick={(e) => e.stopPropagation()}>
                     <h2 className="text-xl text-red-600 mb-4 font-bold">Delete </h2>
 
-                    {categoryToDelete && <p className="mb-1 text-blue-500">"Delete this Category will also delete all the foods under that category!"</p>}
+                    {categoryToDelete && <p className="mb-1 text-blue-500">"Delete this Category will also delete all the foods under that category and related orders to those foods!"</p>}
+                    {foodToDelete && <p className="mb-1 text-blue-500">"Delete this food will also delete related orders to that food!"</p>}
                     {editedTable && <p className="mb-1 text-blue-500">"Delete this table will also delete all the orders related to that table!"</p>}
                     {selectedOrderSeqAndCreatedDate && <p className="mb-1 font-semibold ">You can only delete this order if it expired at least 7 days ago!</p>}
                     <p className="mb-4">Are you sure that you want to Delete this {categoryToDelete && "category \"" + categoryToDelete.name + "\"?"}{foodToDelete && "food \"" + foodToDelete.name + "\"?"}{editedTable && "table \"" + editedTable.tableName + "\"?"}{selectedOrderSeqAndCreatedDate && "order ( Seq : " + selectedOrderSeqAndCreatedDate.orderSeq + " ) ?"}</p>

@@ -1,6 +1,6 @@
 import { CustomerOrderCheckItemType, DeletedOrder, NewOrder, UpdatedOrder } from "@/type/order";
 import { envValues } from "@/util/envValues";
-import { order, tables } from "@prisma/client";
+import { food, order, tables } from "@prisma/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface OrderSliceInitialState {
@@ -116,10 +116,17 @@ const orderSlice = createSlice({
         },
         removeOrdersFromAdmin : ( state , action : PayloadAction<string>) => {
             state.items = state.items.filter(item => item.orderSeq !== action.payload);
+        },
+        removeOrdersFromDeletingCategory : ( state , action : PayloadAction<food[]> ) => {
+            const deletedFoodIds = action.payload.map(item => item.id)
+            state.items = state.items.filter(item => !deletedFoodIds.includes(item.foodId))
+        },
+        removeOrdersFromDeletingFood : ( state , action : PayloadAction<food> ) => {
+            state.items = state.items.filter(item => item.foodId !== action.payload.id );
         }
     }
 })
 
-export const { setOrders , replaceOrders , removeOrdersFromTable , removeOrdersFromAdmin } = orderSlice.actions;
+export const { setOrders , replaceOrders , removeOrdersFromTable , removeOrdersFromAdmin , removeOrdersFromDeletingCategory , removeOrdersFromDeletingFood } = orderSlice.actions;
 
 export default orderSlice.reducer;

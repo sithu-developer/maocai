@@ -39,7 +39,10 @@ export const DELETE = async (req : NextRequest ) => {
     if(!id) return res.json({ error : "Bad request" } , { status : 400 });
     const isExit = await prisma.category.findUnique({ where : { id }});
     if(!isExit) return res.json({ error : "Bad request" } , { status : 400 });
+    const foods = await prisma.food.findMany({ where : { categoryId : id }});
+    const foodIds = foods.map(item => item.id );
+    await prisma.order.deleteMany({ where : { foodId : { in : foodIds } }});
     await prisma.food.deleteMany({ where : { categoryId : id }});
     const deletedCategory = await prisma.category.delete({ where : { id }});
-    return res.json({ deletedCategory });
+    return res.json({ deletedCategory , deletedFoods : foods });
 }

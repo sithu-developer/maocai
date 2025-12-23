@@ -3,6 +3,7 @@ import { envValues } from "@/util/envValues";
 import { category } from "@prisma/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { removeFoodsFromCategory } from "./food";
+import { removeOrdersFromDeletingCategory } from "./order";
 
 
 interface InitialStateType {
@@ -65,9 +66,10 @@ export const deleteCategory = createAsyncThunk("categorySlice/deleteCategory" , 
         const response = await fetch(`${envValues.apiUrl}/category?id=${id}` , {
             method : "DELETE",
         });
-        const { deletedCategory } = await response.json();
-        thunkApi.dispatch(removeFoodsFromCategory(deletedCategory))
-        thunkApi.dispatch(removeCategory(deletedCategory))
+        const { deletedCategory , deletedFoods } = await response.json();
+        thunkApi.dispatch(removeOrdersFromDeletingCategory(deletedFoods));
+        thunkApi.dispatch(removeFoodsFromCategory(deletedCategory));
+        thunkApi.dispatch(removeCategory(deletedCategory));
         if(isSuccess) {
             isSuccess();
         }

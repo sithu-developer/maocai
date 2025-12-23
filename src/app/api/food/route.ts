@@ -37,6 +37,7 @@ export const DELETE = async( req : NextRequest ) => {
     if(!id) return res.json({ error : "Bad request" } , { status : 400 });
     const isExit = await prisma.food.findUnique({ where : { id }});
     if(!isExit) return res.json({ error : "Bad request" } , { status : 400 });
+    await prisma.order.deleteMany({ where : { foodId : id } })
     const deletedFood = await prisma.food.delete({ where : { id }});
     return res.json({ deletedFood });
 }

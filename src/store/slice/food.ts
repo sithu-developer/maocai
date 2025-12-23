@@ -2,6 +2,7 @@ import { DeleteFood, NewFood, UpdatedFood } from "@/type/food";
 import { envValues } from "@/util/envValues";
 import { category, food } from "@prisma/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { removeOrdersFromDeletingFood } from "./order";
 
 interface InitialStateType {
     items : food[],
@@ -64,7 +65,8 @@ export const deleteFood = createAsyncThunk("foodSlice/deleteFood" , async( foodT
             method : "DELETE"
         });
         const { deletedFood } = await response.json();
-        thunkApi.dispatch(removeFood(deletedFood))
+        thunkApi.dispatch(removeOrdersFromDeletingFood(deletedFood));
+        thunkApi.dispatch(removeFood(deletedFood));
         if(isSuccess) {
             isSuccess();
         }
