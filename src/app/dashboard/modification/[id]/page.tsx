@@ -94,7 +94,7 @@ const MenuPage = () => {
                 </div>
                 <div className="flex flex-wrap gap-5 p-5 overflow-auto">
                     {foods.filter(food => food.categoryId === selectedCategory.id).length ? foods.filter(food => food.categoryId === selectedCategory.id).map(item => (
-                        <div key={item.id} className="relative h-43 w-40 bg-cyan-500 rounded-[9px] border-2 border-borderColor flex flex-col justify-between">
+                        <div key={item.id} className="relative bg-white h-43 w-40 rounded-[9px] border-2 border-borderColor flex flex-col justify-between">
                             <div className="overflow-hidden h-full w-full flex items-center justify-center rounded-t-[9px]" >
                                 <Image alt="category photo" src={item.url} width={400} height={400} className=" h-auto w-full object-cover"  />
                             </div>
@@ -114,7 +114,7 @@ const MenuPage = () => {
                     :<p>No created food !</p>}
                 </div>
             </div>
-            <div className=" grow p-5 flex flex-col gap-5">
+            <div className="bg-linear-to-br from-[#53d3fa] via-[#b794f4] to-[#f687b3] grow p-5 flex flex-col gap-5">
                 <div className={`flex ${editedFood ? "justify-between" : "justify-center"} items-center`} >
                     <p className="text-2xl">{editedFood ? "Edit Food" : "New Food"}</p>
                     {editedFood && <div className="p-1.5 border border-red-800 rounded-md cursor-pointer hover:bg-gray-400" onClick={() => setOpenWarning(true)}>
@@ -136,7 +136,7 @@ const MenuPage = () => {
                 {editedFood ? 
                 <div className="flex flex-col gap-2">
                     <p>Image</p>
-                    <div className="flex items-center justify-between gap-3 bg-blue-300 px-3 py-2 w-full rounded-3xl">
+                    <div className="flex items-center justify-between gap-3 bg-blue-300 border px-3 py-2 w-full rounded-3xl">
                         <p className="w-[15vw] truncate">{updatedImageFile ? updatedImageFile[0].name : editedFood.url}</p>
                         <div className="relative hover:bg-blue-400 cursor-pointer rounded-3xl p-1">
                             <PaintBrushIcon className="w-4" />
@@ -162,9 +162,9 @@ const MenuPage = () => {
                                 setNewImageFile(newImageFile)
                             }
                         }} />
-                        <p>Add Image</p>
+                        <p className="text-secondary" >Add Image</p>
                     </div>
-                    {newImageFile && newImageFile[0].name && <div className="flex items-center gap-3 bg-blue-300 px-2 py-1 w-fit rounded-3xl">
+                    {newImageFile && newImageFile[0].name && <div className="flex items-center gap-3 bg-blue-300 border px-2 py-1 w-fit rounded-3xl">
                         <p className="max-w-[15vw] truncate">{newImageFile[0].name}</p>
                         <div className="hover:bg-blue-400 cursor-pointer rounded-3xl" onClick={() => {
                             if(inputRef.current) {
@@ -192,8 +192,8 @@ const MenuPage = () => {
                             }
                         }
                     }} >{editedFood ? "Cancel" : "Clear"}</button>
-                    {editedFood ? <button disabled={!editedFood.name || !editedFood.price || !editedFood.url} className="bg-blue-600 cursor-pointer p-2 rounded-lg hover:bg-blue-500 select-none disabled:bg-gray-500 disabled:text-gray-800 disabled:cursor-not-allowed" onClick={handleUpdateFood} >Update</button>
-                    :<button disabled={!newFood.name || !newFood.price || !newImageFile} className="bg-blue-600 cursor-pointer p-2 rounded-lg hover:bg-blue-500 select-none disabled:bg-gray-500 disabled:text-gray-800 disabled:cursor-not-allowed" onClick={handleCreateNewFood} >Create</button>}
+                    {editedFood ? <button disabled={!editedFood.name || !editedFood.price || !editedFood.url} className="bg-blue-600 text-secondary cursor-pointer p-2 rounded-lg hover:bg-blue-500 select-none disabled:bg-gray-500 disabled:text-gray-800 disabled:cursor-not-allowed" onClick={handleUpdateFood} >Update</button>
+                    :<button disabled={!newFood.name || !newFood.price || !newImageFile} className="bg-blue-600 text-secondary cursor-pointer p-2 rounded-lg hover:bg-blue-500 select-none disabled:bg-gray-500 disabled:text-gray-800 disabled:cursor-not-allowed" onClick={handleCreateNewFood} >Create</button>}
                 </div>
             </div>
             <WarningDialog openWarning={openWarning} setOpenWarning={setOpenWarning} foodToDelete={editedFood} setEditedFood={setEditedFood} />

@@ -79,7 +79,7 @@ const CustomerOrderingPage = () => {
                         return (
                             <div key={item.id} className="bg-foodBg w-[13vw] h-[14vw] min-h-[120px] flex flex-col rounded-[5px] border border-foodBorder shadow-lg shadow-foodBg" >
                                 <p className={abyssinica.className + " text-[clamp(10px,1.2vw,16px)] text-center text-fontColor py-1 border-b border-b-foodBorder"}>{item.name + " - " + item.price}ks</p>
-                                <div className="w-full grow flex justify-center items-center overflow-hidden bg-amber-400">
+                                <div className="w-full grow flex justify-center items-center overflow-hidden bg-white">
                                     <Image alt="Food image" src={item.url} width={500} height={500} className="w-full h-auto object-cover select-none"  />
                                 </div>
                                 <div className="flex justify-between items-center text-fontColor py-1 px-2 border-t border-t-foodBorder" >

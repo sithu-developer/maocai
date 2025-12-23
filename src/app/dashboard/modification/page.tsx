@@ -76,7 +76,7 @@ const ModificationPage = () => {
                 <p className="text-3xl px-5 py-3.5">Category</p>
                 <div className="flex flex-wrap gap-5 p-5 overflow-auto">
                     {categories.length ? categories.map(item => (
-                        <div key={item.id} className="relative h-43 w-40 bg-cyan-500 rounded-[9px] border-2 border-borderColor flex flex-col justify-between cursor-pointer" onClick={() => router.push(`./modification/${item.id}`)}>
+                        <div key={item.id} className="relative h-43 w-40 rounded-[9px] border-2 border-borderColor flex flex-col justify-between cursor-pointer" onClick={() => router.push(`./modification/${item.id}`)}>
                             <div className="overflow-hidden h-full w-full flex items-center justify-center rounded-t-[9px]" >
                                 <Image alt="category photo" src={item.url} width={400} height={400} className=" h-full w-auto object-cover"  />
                             </div>
@@ -100,7 +100,7 @@ const ModificationPage = () => {
                     :<p>No created category !</p>}
                 </div>
             </div>
-            <div className=" grow p-5 flex flex-col gap-5">
+            <div className="bg-linear-to-br from-[#53d3fa] via-[#b794f4] to-[#f687b3] grow p-5 flex flex-col gap-5">
                 <div className={`flex ${editedCategory ? "justify-between" : "justify-center"} items-center`} >
                     <p className="text-2xl">{editedCategory ? "Edit Category" : "New Category"}</p>
                     {editedCategory && <div className="p-1.5 border border-red-800 rounded-md cursor-pointer hover:bg-gray-400" onClick={() => setOpenWarning(true)}>
@@ -116,7 +116,7 @@ const ModificationPage = () => {
                 {editedCategory ? 
                 <div className="flex flex-col gap-2">
                     <p>Image</p>
-                    <div className="flex items-center justify-between gap-3 bg-blue-300 px-3 py-2 w-full rounded-3xl">
+                    <div className="flex items-center justify-between gap-3 bg-blue-300 border px-3 py-2 w-full rounded-3xl">
                         <p className="w-[15vw] truncate">{updatedImageFile ? updatedImageFile[0].name : editedCategory.url}</p>
                         <div className="relative hover:bg-blue-400 cursor-pointer rounded-3xl p-1">
                             <PaintBrushIcon className="w-4" />
@@ -142,9 +142,9 @@ const ModificationPage = () => {
                                 setNewImageFile(newImageFile)
                             }
                         }} />
-                        <p>Add Image</p>
+                        <p className="text-secondary">Add Image</p>
                     </div>
-                    {newImageFile && newImageFile[0].name && <div className="flex items-center gap-3 bg-blue-300 px-2 py-1 w-fit rounded-3xl">
+                    {newImageFile && newImageFile[0].name && <div className="flex items-center gap-3 bg-blue-300 border px-2 py-1 w-fit rounded-3xl">
                         <p className="max-w-[15vw] truncate">{(newImageFile as FileList)[0].name}</p>
                         <div className="hover:bg-blue-400 cursor-pointer rounded-3xl" onClick={() => {
                             if(inputRef.current) {
@@ -177,8 +177,8 @@ const ModificationPage = () => {
                             }
                         }
                     }} >{editedCategory ? "Cancel" : "Clear"}</button>
-                    {editedCategory ? <button disabled={!editedCategory.name || !editedCategory.url} className="bg-blue-600 cursor-pointer p-2 rounded-lg hover:bg-blue-500 select-none disabled:bg-gray-500 disabled:text-gray-800 disabled:cursor-not-allowed" onClick={handleUpdateCategory} >Update</button>
-                    :<button disabled={!newCategory.name || !newImageFile} className="bg-blue-600 cursor-pointer p-2 rounded-lg hover:bg-blue-500 select-none disabled:bg-gray-500 disabled:text-gray-800 disabled:cursor-not-allowed" onClick={handleCreateNewCategory} >Create</button>}
+                    {editedCategory ? <button disabled={!editedCategory.name || !editedCategory.url} className="bg-blue-600 text-secondary cursor-pointer p-2 rounded-lg hover:bg-blue-500 select-none disabled:bg-gray-500 disabled:text-gray-800 disabled:cursor-not-allowed" onClick={handleUpdateCategory} >Update</button>
+                    :<button disabled={!newCategory.name || !newImageFile} className="bg-blue-600 text-secondary cursor-pointer p-2 rounded-lg hover:bg-blue-500 select-none disabled:bg-gray-500 disabled:text-gray-800 disabled:cursor-not-allowed" onClick={handleCreateNewCategory} >Create</button>}
                 </div>
             </div>
             <WarningDialog openWarning={openWarning} setOpenWarning={setOpenWarning} categoryToDelete={editedCategory} setEditedCategory={setEditedCategory} />
