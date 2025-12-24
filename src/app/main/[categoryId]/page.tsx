@@ -110,8 +110,8 @@ const CustomerOrderingPage = () => {
                     <button onClick={handleCreateNewOrder} disabled={!voucherItems.length} className={abyssinica.className + " text-[clamp(10px,2vw,18px)] bg-[#db3030] text-white cursor-pointer py-2 rounded-3xl shadow-xl shadow-primary w-full hover:bg-primary select-none disabled:bg-black/55 disabled:text-black/70 disabled:cursor-not-allowed disabled:shadow-gray-600"}>Order Comfirm</button>
                 </div>
             </div>
-            {orders.length ? <div className="fixed bottom-5 left-5" >
-                <InboxIcon onClick={() => setOpenOrderList(true)} className="min-w-10 max-w-16 bg-secondary w-[5vw] p-1 text-primary rounded-2xl border border-primary shadow-xl shadow-primary cursor-pointer" />
+            {orders.length ? <div className="fixed top-3 left-3" >
+                <InboxIcon onClick={() => setOpenOrderList(true)} className="min-w-10 max-w-16 bg-secondary w-[4.5vw] p-1 text-primary rounded-2xl border border-primary shadow-lg shadow-primary cursor-pointer" />
             </div>
             : undefined}
             <OrderList tableId={tableId} openOrderList={openOrderList} setOpenOrderList={setOpenOrderList} />

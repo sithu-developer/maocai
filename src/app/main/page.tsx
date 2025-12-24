@@ -25,7 +25,7 @@ const MainPage = () => {
                 <div className="h-[75%] flex items-center justify-between">
                     {categories.length ? categories.map(item => (
                         <Link key={item.id} href={`/main/${item.id}?tableId=${tableId}`} style={{ textDecoration : "none" }} >  
-                            <div className="relative h-[21vw] w-[19vw] max-w-68 max-h-75 rounded-[9px] border-2 border-borderColor flex flex-col justify-between" >
+                            <div className="relative h-[21vw] w-[19vw] max-w-68 max-h-75 rounded-[9px] border-2 border-borderColor flex flex-col justify-between shadow-xl shadow-primary" >
                                 <div className="overflow-hidden grow w-full flex items-center justify-center rounded-t-[7.4px]" >
                                     <Image alt="category photo" src={item.url} width={800} height={800} className="h-full w-auto object-cover"  />
                                 </div>
